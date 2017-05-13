@@ -1,3 +1,9 @@
+dependency-reduced-pom.xml
+target
+*.obj
+*.pch
+*.#*
+*.map
 *.class
 
 # Mobile Tools for Java (J2ME)
