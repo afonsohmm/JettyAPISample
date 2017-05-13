@@ -41,8 +41,7 @@ public class JAuthorizationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        Method method = resourceInfo.getResourceMethod();
-        Logger.getLogger(JAuthorizationFilter.class).info(requestContext.getUriInfo().getPath());
+        Method method = resourceInfo.getResourceMethod();        
         if (!method.isAnnotationPresent(PermitAll.class)) {
             String token = requestContext.getHeaderString("Authorization");
 

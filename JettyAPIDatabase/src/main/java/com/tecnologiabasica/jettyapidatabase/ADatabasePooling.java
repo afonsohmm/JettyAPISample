@@ -207,6 +207,14 @@ public abstract class ADatabasePooling {
 
         return result;
     }
+    
+    public void executeSqlArray(String[] sqlArray) {
+        if (sqlArray != null) {
+            for (String sql : sqlArray) {
+                execute(sql);
+            }
+        }
+    }
 
     public long insert(String table, HashMap<String, Object> initialValues) {
 

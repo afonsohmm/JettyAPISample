@@ -35,6 +35,7 @@ public class JServerLauncher {
             portSSL = Integer.parseInt(args[1]);
         }
         
+        //Configura o arquivo de log que será gerado. Importante que seja feito o mais rápido possível.
         JLoggerUtil.getInstance().start(JAppCommons.getHomeDir(), "JettyAPIBackend");
 
         Server server = new Server();
@@ -67,7 +68,7 @@ public class JServerLauncher {
 
         try {
             server.start();
-            //JMainController.getInstance();
+            JMainApplication.getInstance();
             server.join();
         } catch (Exception ex) {            
             Logger.getLogger(JServerLauncher.class.getName()).error(ex);
