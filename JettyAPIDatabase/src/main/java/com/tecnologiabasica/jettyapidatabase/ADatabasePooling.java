@@ -363,7 +363,7 @@ public abstract class ADatabasePooling {
     }
 
     public int getDBVersion() {
-        int result = 1;
+        int result = -1;
         ResultSet rs = query("select * from version");
         if (rs != null) {
             try {

@@ -67,7 +67,7 @@ public class JDatabaseConnector extends ADatabasePooling {
     protected void updateDatabase() {
         int version = getDBVersion();
         //Versão inicial para criação das tabelas
-        if (version < 2) {
+        if (version < 1) {
             executeSqlArray(JUserInfoSql.createTable(databaseType));
            
             JDefaultValues defaultValues = new JDefaultValues();
