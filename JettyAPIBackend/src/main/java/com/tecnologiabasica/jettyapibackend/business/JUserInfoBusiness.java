@@ -7,8 +7,8 @@ package com.tecnologiabasica.jettyapibackend.business;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tecnologiabasica.jettyapibackend.util.JsonExcludeStrategy;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
+import com.tecnologiabasica.jettyapicommons.util.JsonExcludeStrategy;
 import java.util.LinkedList;
 
 /**

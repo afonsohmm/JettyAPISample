@@ -52,5 +52,6 @@
         <module>JettyAPIBackend</module>
         <module>JettyAPICommons</module>
         <module>JettyAPIDatabase</module>
+        <module>JettyAPIClient</module>
     </modules>
 </project>

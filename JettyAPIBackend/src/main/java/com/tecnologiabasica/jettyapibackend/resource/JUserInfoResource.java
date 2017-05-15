@@ -54,7 +54,7 @@ public class JUserInfoResource {
                 response = Response.status(Response.Status.CREATED).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
                 JUserInfoBusiness.getInstance().createUser(entity);
             } else {
-                response = Response.status(Response.Status.NOT_FOUND).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+                response = Response.status(Response.Status.NOT_ACCEPTABLE).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
             }
 
         }
