@@ -28,8 +28,12 @@ public class JUserInfoSql extends JGenericInfoSql {
 
         String[] sqlIndex = getIndex(JUserInfoEntity.TABLE_NAME, databaseType);
         if (sqlIndex != null) {
-            sqlReturn = new String[sqlIndex.length + 1];
+            sqlReturn = new String[sqlIndex.length + 2];
             sqlReturn[0] = sql;
+            
+            sql = "CREATE INDEX " + JUserInfoEntity.TABLE_NAME + "_" + JUserInfoEntity.USER_NAME + "_idx ON " + JUserInfoEntity.TABLE_NAME + " (" + JUserInfoEntity.USER_NAME + ")";
+            sqlReturn[1] = sql;            
+            
             for (int i = 0; i < sqlIndex.length; i++) {
                 sqlReturn[i + 1] = sqlIndex[i];
             }

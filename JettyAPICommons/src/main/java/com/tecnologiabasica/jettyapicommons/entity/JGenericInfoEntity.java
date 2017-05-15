@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
 
 /**
  *
@@ -33,8 +32,8 @@ public class JGenericInfoEntity implements Serializable {
     public static final String MONTHOFYEAR = "monthOfYear";
     public static final String YEAR = "year";
     public static final String EMAIL = "email";
-    public static final String DOMAIN = "domain";
-    public static final String GROUP = "group";
+    public static final String DOMAIN_ID = "domainId";
+    public static final String GROUP_ID = "groupId";
 
     protected long id = -1;
     protected long remoteId = -1;           
@@ -54,8 +53,8 @@ public class JGenericInfoEntity implements Serializable {
     protected String timeOnlyString;
     protected String dayOfWeekString;
     protected String email;
-    protected String domain; 
-    protected String group;
+    protected String domainId; 
+    protected String groupId;
 
     public JGenericInfoEntity() {
         DateTime dtNow = new DateTime().now();
@@ -236,25 +235,25 @@ public class JGenericInfoEntity implements Serializable {
         if (email != null) {
             String param[] = email.split("@");
             if (param.length > 0) {
-                domain = param[param.length - 1];
+                domainId = param[param.length - 1];
             }
         }
     }
 
-    public String getDomain() {
-        return domain;
+    public String getDomainId() {
+        return domainId;
     }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
+    public void setDomainId(String domainId) {
+        this.domainId = domainId;
     }
 
-    public String getGroup() {
-        return group;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
 }

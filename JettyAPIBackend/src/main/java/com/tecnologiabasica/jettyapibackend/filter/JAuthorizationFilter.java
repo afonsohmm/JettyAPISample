@@ -23,15 +23,11 @@ import org.json.JSONObject;
 @Provider
 public class JAuthorizationFilter implements ContainerRequestFilter {
 
-    private static final Response.ResponseBuilder BASE_RESPONSE = Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON);
-
     //Mensagem e response para token vazio
     private static final String EMPTY_TOKEN_MESSAGE = new JSONObject().put("message", "Not found").toString();
-    private static final Response EMPTY_TOKEN = BASE_RESPONSE.entity(EMPTY_TOKEN_MESSAGE).build();
 
     //Mensagem e response para token invalido
-    private static final String INVALID_TOKEN_MESSAGE = new JSONObject().put("message", "Not acceptable").toString();
-    private static final Response INVALID_TOKEN = BASE_RESPONSE.entity(INVALID_TOKEN_MESSAGE).build();
+    private static final String INVALID_TOKEN_MESSAGE = new JSONObject().put("message", "Not acceptable").toString();    
 
     @Context
     private ResourceInfo resourceInfo;
@@ -40,18 +36,21 @@ public class JAuthorizationFilter implements ContainerRequestFilter {
     private HttpServletRequest request;
 
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
+    public void filter(ContainerRequestContext requestContext) throws IOException {        
+        Response.ResponseBuilder baseResponse = Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON);
         Method method = resourceInfo.getResourceMethod();        
         if (!method.isAnnotationPresent(PermitAll.class)) {
             String token = requestContext.getHeaderString("Authorization");
 
             if (token == null || token.isEmpty()) {
+                Response response = baseResponse.entity(EMPTY_TOKEN_MESSAGE).build();
                 Logger.getLogger(JAuthorizationFilter.class).info(request.getRemoteAddr() + " - " + requestContext.getMethod() + " - " + requestContext.getUriInfo().getPath() + " - Response: UNAUTHORIZED - Authorization: " + token);
-                requestContext.abortWith(EMPTY_TOKEN);
+                requestContext.abortWith(response);
 
             } else if (!token.equals(JAppCommons.API_TOKEN)) {
+                Response response = baseResponse.entity(INVALID_TOKEN_MESSAGE).build();
                 Logger.getLogger(JAuthorizationFilter.class).info(request.getRemoteAddr() + " - " + requestContext.getMethod() + " - " + requestContext.getUriInfo().getPath() + " - Response: UNAUTHORIZED - Authorization: " + token);
-                requestContext.abortWith(INVALID_TOKEN);
+                requestContext.abortWith(response);
             }
         }
     }

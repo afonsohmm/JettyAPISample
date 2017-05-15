@@ -63,8 +63,8 @@ public class JGenericInfoSql {
         sql += JGenericInfoEntity.MONTHOFYEAR + " " + getIntegerString(databaseType) + ",";
         sql += JGenericInfoEntity.YEAR + " " + getIntegerString(databaseType) + ",";
         sql += JGenericInfoEntity.EMAIL + " " + getTextString(databaseType) + ",";
-        sql += JGenericInfoEntity.DOMAIN + " " + getTextString(databaseType) + ",";
-        sql += JGenericInfoEntity.GROUP + " " + getTextString(databaseType) + ",";
+        sql += JGenericInfoEntity.DOMAIN_ID + " " + getTextString(databaseType) + ",";
+        sql += JGenericInfoEntity.GROUP_ID + " " + getTextString(databaseType) + ",";
 
         return sql;
     }
@@ -135,10 +135,10 @@ public class JGenericInfoSql {
             sql = "CREATE INDEX " + tableName + "_" + JGenericInfoEntity.EMAIL + "_idx ON " + tableName + " (" + JGenericInfoEntity.EMAIL + ")";
             sqlReturn[2] = sql;
 
-            sql = "CREATE INDEX " + tableName + "_" + JGenericInfoEntity.DOMAIN + "_idx ON " + tableName + " (" + JGenericInfoEntity.DOMAIN + ")";
+            sql = "CREATE INDEX " + tableName + "_" + JGenericInfoEntity.DOMAIN_ID + "_idx ON " + tableName + " (" + JGenericInfoEntity.DOMAIN_ID + ")";
             sqlReturn[3] = sql;
 
-            sql = "CREATE INDEX " + tableName + "_" + JGenericInfoEntity.GROUP + "_idx ON " + tableName + " (" + JGenericInfoEntity.GROUP + ")";
+            sql = "CREATE INDEX " + tableName + "_" + JGenericInfoEntity.GROUP_ID + "_idx ON " + tableName + " (" + JGenericInfoEntity.GROUP_ID + ")";
             sqlReturn[4] = sql;
 
             sql = "CREATE INDEX " + tableName + "_" + JGenericInfoEntity.DATETIME + "_idx ON " + tableName + " (" + JGenericInfoEntity.DATETIME + ")";
