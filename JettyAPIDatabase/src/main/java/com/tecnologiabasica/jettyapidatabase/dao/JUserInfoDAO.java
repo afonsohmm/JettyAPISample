@@ -69,7 +69,7 @@ public class JUserInfoDAO extends JGenericInfoDAO {
     public long delete(JUserInfoEntity entity) {
         long returnValue = -1;
         String sql = "delete from " + JUserInfoEntity.TABLE_NAME + " where " + JUserInfoEntity.ID + "=" + entity.getId();
-        JDatabaseConnector.getInstance().execute(sql);
+        returnValue = JDatabaseConnector.getInstance().execute(sql);
         return returnValue;
     }
 

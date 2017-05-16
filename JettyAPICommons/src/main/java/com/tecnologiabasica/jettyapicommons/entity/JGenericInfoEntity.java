@@ -55,11 +55,15 @@ public class JGenericInfoEntity implements Serializable {
     protected String email;
     protected String domainId; 
     protected String groupId;
-
+       
     public JGenericInfoEntity() {
-        DateTime dtNow = new DateTime().now();
+        init();
+    }    
+    
+    private void init() {
+        DateTime dtNow = DateTime.now();
         setDateTimeReceived(dtNow.getMillis());
-        setDateTime(dtNow.getMillis());
+        setDateTime(dtNow.getMillis());        
     }
 
     public long getDateTimeReceived() {

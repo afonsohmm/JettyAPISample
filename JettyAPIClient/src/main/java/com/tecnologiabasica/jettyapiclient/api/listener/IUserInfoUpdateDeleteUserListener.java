@@ -11,7 +11,7 @@ import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
  *
  * @author afonso
  */
-public interface IUserInfoUpdateUserListener {
+public interface IUserInfoUpdateDeleteUserListener {
 
     public void ok(JUserInfoEntity entity);
 

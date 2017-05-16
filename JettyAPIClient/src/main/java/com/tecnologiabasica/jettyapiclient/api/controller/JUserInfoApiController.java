@@ -13,7 +13,7 @@ import retrofit2.Response;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoGetUserListListener;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoCreateUserListener;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateUserListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateDeleteUserListener;
 
 /**
  *
@@ -22,7 +22,7 @@ import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateUserListe
 public class JUserInfoApiController {
 
     private IUserInfoCreateUserListener listenerCreateUser = null;
-    private IUserInfoUpdateUserListener listenerUpdateUser = null;
+    private IUserInfoUpdateDeleteUserListener listenerUpdateDeleteUser = null;
     private IUserInfoGetUserListListener listenerGetUserList = null;
 
     public void createUser(JUserInfoEntity entity, String key, IUserInfoCreateUserListener listener) {
@@ -64,8 +64,8 @@ public class JUserInfoApiController {
         });
     }
     
-    public void updateUser(JUserInfoEntity entity, String key, IUserInfoUpdateUserListener listener) {
-        listenerUpdateUser = listener;
+    public void updateUser(JUserInfoEntity entity, String key, IUserInfoUpdateDeleteUserListener listener) {
+        listenerUpdateDeleteUser = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
         Call<JUserInfoEntity> call = serviceApi.updateUser(entity, key);
         call.enqueue(new Callback<JUserInfoEntity>() {
@@ -75,14 +75,14 @@ public class JUserInfoApiController {
                      //OK
                     case 200:
                         JUserInfoEntity entity200 = response.body();
-                        listenerUpdateUser.ok(entity200);
+                        listenerUpdateDeleteUser.ok(entity200);
                         break;
                     //NO CONTENT
                     case 204:
-                        listenerUpdateUser.noContent();
+                        listenerUpdateDeleteUser.noContent();
                         break;
                     default:
-                        listenerUpdateUser.unknow();
+                        listenerUpdateDeleteUser.unknow();
                         break;                        
                         
                 }
@@ -90,11 +90,41 @@ public class JUserInfoApiController {
 
             @Override
             public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
-                listenerUpdateUser.failure(thrwbl.getMessage());
+                listenerUpdateDeleteUser.failure(thrwbl.getMessage());
             }
         });
     }
-    
+
+    public void deleteUser(JUserInfoEntity entity, String key, IUserInfoUpdateDeleteUserListener listener) {
+        listenerUpdateDeleteUser = listener;
+        JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
+        Call<JUserInfoEntity> call = serviceApi.deleteUser(entity, key);
+        call.enqueue(new Callback<JUserInfoEntity>() {
+            @Override
+            public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
+                switch (response.code()) {
+                     //OK
+                    case 200:
+                        JUserInfoEntity entity200 = response.body();
+                        listenerUpdateDeleteUser.ok(entity200);
+                        break;
+                    //NO CONTENT
+                    case 204:
+                        listenerUpdateDeleteUser.noContent();
+                        break;
+                    default:
+                        listenerUpdateDeleteUser.unknow();
+                        break;                        
+                        
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
+                listenerUpdateDeleteUser.failure(thrwbl.getMessage());
+            }
+        });
+    }
 
     public void getUserList(String domainId, String groupId, String key, IUserInfoGetUserListListener listener) {
         listenerGetUserList = listener;

@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -40,6 +41,9 @@ public class JUserInfoApiInterface {
 
         @PUT("api/userinfo/v1/updateUser/{key}")
         Call<JUserInfoEntity> updateUser(@Body JUserInfoEntity entity, @Path("key") String key);        
+
+        @DELETE("api/userinfo/v1/deleteUser/{key}")
+        Call<JUserInfoEntity> deleteUser(@Body JUserInfoEntity entity, @Path("key") String key);        
         
         @GET("api/userinfo/v1/getUserList/{key}")
         Call<LinkedList<JUserInfoEntity>> getUserList(@Query("domainId") String domainId, @Query("groupId") String groupId, @Path("key") String key);        

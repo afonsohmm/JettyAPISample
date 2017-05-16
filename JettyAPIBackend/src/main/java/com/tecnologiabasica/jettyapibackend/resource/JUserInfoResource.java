@@ -12,6 +12,7 @@ import com.tecnologiabasica.jettyapidatabase.dao.JUserInfoDAO;
 import java.util.LinkedList;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -23,6 +24,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -48,6 +50,7 @@ public class JUserInfoResource {
         }
 
         if (response == null) {
+            entity.setDateTimeReceived(DateTime.now().getMillis());
             long id = JUserInfoDAO.getInstance().insert(entity);
             if (id != -1) {
                 entity.setId(id);
@@ -87,6 +90,30 @@ public class JUserInfoResource {
         }
         return response;
     }
+    
+    @Path("/v1/deleteUser/{key}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @DELETE
+    public Response deleteUser(@Context HttpServletRequest request, JUserInfoEntity entity, @PathParam("key") String key) {
+        String remoteIP = request.getRemoteAddr();
+        Response response = null;
+
+        entity.setId(entity.getRemoteId());        
+        
+        long id = JUserInfoDAO.getInstance().delete(entity);
+        if (id != -1) {            
+            response = Response.status(Response.Status.OK).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+            JUserInfoBusiness.getInstance().createUser(entity);
+        } else {
+            response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+        }
+
+        if (response != null) {
+            Logger.getLogger(JUserInfoResource.class).info(request.getPathInfo() + " - remoteIP: " + remoteIP + " - " + response.getStatus());
+        }
+        return response;
+    }
+    
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
