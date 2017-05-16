@@ -11,15 +11,11 @@ import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
  *
  * @author afonso
  */
-public interface IUserInfoCreateUserListener {
+public interface IUserInfoUpdateUserListener {
 
-    public void created(JUserInfoEntity entity);
+    public void ok(JUserInfoEntity entity);
 
-    public void badRequest();
-
-    public void conflict();
-
-    public void notAcceptable();
+    public void noContent();
 
     public void unknow();
 

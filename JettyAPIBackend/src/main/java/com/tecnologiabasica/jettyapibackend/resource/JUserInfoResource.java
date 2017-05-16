@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -30,10 +31,10 @@ import org.apache.log4j.Logger;
 @Path("/userinfo")
 public class JUserInfoResource {
 
-    @Path("/v1/createUser/{email}")
+    @Path("/v1/createUser/{key}")
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public Response createUser(@Context HttpServletRequest request, JUserInfoEntity entity, @PathParam("email") String email) {
+    public Response createUser(@Context HttpServletRequest request, JUserInfoEntity entity, @PathParam("key") String key) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 
@@ -64,10 +65,33 @@ public class JUserInfoResource {
         return response;
     }
 
+    @Path("/v1/updateUser/{key}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @PUT
+    public Response updateUser(@Context HttpServletRequest request, JUserInfoEntity entity, @PathParam("key") String key) {
+        String remoteIP = request.getRemoteAddr();
+        Response response = null;
+
+        entity.setId(entity.getRemoteId());        
+        
+        long id = JUserInfoDAO.getInstance().update(entity);
+        if (id != -1) {            
+            response = Response.status(Response.Status.OK).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+            JUserInfoBusiness.getInstance().createUser(entity);
+        } else {
+            response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+        }
+
+        if (response != null) {
+            Logger.getLogger(JUserInfoResource.class).info(request.getPathInfo() + " - remoteIP: " + remoteIP + " - " + response.getStatus());
+        }
+        return response;
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/v1/getUserList")
-    public Response getUserList(@Context HttpServletRequest request, @QueryParam("domainId") String domainId, @QueryParam("groupId") String groupId) {
+    @Path("/v1/getUserList/{key}")
+    public Response getUserList(@Context HttpServletRequest request, @QueryParam("domainId") String domainId, @QueryParam("groupId") String groupId, @PathParam("key") String key) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 

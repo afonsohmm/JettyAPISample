@@ -13,6 +13,7 @@ import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -34,11 +35,14 @@ public class JUserInfoApiInterface {
     }
 
     public interface UserInfoApiInterface {
-        @POST("api/userinfo/v1/createUser/{email}")
-        Call<JUserInfoEntity> createUser(@Body JUserInfoEntity entity, @Path("email") String email);
+        @POST("api/userinfo/v1/createUser/{key}")
+        Call<JUserInfoEntity> createUser(@Body JUserInfoEntity entity, @Path("key") String key);
 
-        @GET("api/userinfo/v1/getUserList")
-        Call<LinkedList<JUserInfoEntity>> getUserList(@Query("domainId") String domainId, @Query("groupId") String groupId);        
+        @PUT("api/userinfo/v1/updateUser/{key}")
+        Call<JUserInfoEntity> updateUser(@Body JUserInfoEntity entity, @Path("key") String key);        
+        
+        @GET("api/userinfo/v1/getUserList/{key}")
+        Call<LinkedList<JUserInfoEntity>> getUserList(@Query("domainId") String domainId, @Query("groupId") String groupId, @Path("key") String key);        
     }
 
 }

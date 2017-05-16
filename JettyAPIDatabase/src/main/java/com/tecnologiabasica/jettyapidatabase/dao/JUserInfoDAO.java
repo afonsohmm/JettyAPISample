@@ -109,8 +109,7 @@ public class JUserInfoDAO extends JGenericInfoDAO {
                 if (rs.first() == true) {
                     list = new LinkedList<>();
                     do {
-                        JUserInfoEntity entity = getEntityFromDB(rs);
-                        entity.setUserPassword(null);
+                        JUserInfoEntity entity = getEntityFromDB(rs);                        
                         entity.setRemoteId(entity.getId());
                         list.add(entity);
                     } while (rs.next());
@@ -137,8 +136,7 @@ public class JUserInfoDAO extends JGenericInfoDAO {
         if (rs != null) {
             try {
                 if (rs.first() == true) {
-                    entity = getEntityFromDB(rs);
-                    entity.setUserPassword(null);
+                    entity = getEntityFromDB(rs);                    
                     entity.setRemoteId(entity.getId());
                 }
             } catch (SQLException ex) {

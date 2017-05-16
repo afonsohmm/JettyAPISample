@@ -13,10 +13,13 @@ import java.util.LinkedList;
  * @author afonso
  */
 public interface IUserInfoGetUserListListener {
-    
+
     public void ok(LinkedList<JUserInfoEntity> list);
-    public void noContent(); 
+
+    public void noContent();
+
     public void unknow();
-    public void failure(String message); 
-    
+
+    public void failure(String message);
+
 }

@@ -13,6 +13,7 @@ import retrofit2.Response;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoGetUserListListener;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoCreateUserListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateUserListener;
 
 /**
  *
@@ -21,12 +22,13 @@ import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoCreateUserListe
 public class JUserInfoApiController {
 
     private IUserInfoCreateUserListener listenerCreateUser = null;
+    private IUserInfoUpdateUserListener listenerUpdateUser = null;
     private IUserInfoGetUserListListener listenerGetUserList = null;
 
-    public void createUser(JUserInfoEntity entity, String email, IUserInfoCreateUserListener listener) {
+    public void createUser(JUserInfoEntity entity, String key, IUserInfoCreateUserListener listener) {
         listenerCreateUser = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
-        Call<JUserInfoEntity> call = serviceApi.createUser(entity, email);
+        Call<JUserInfoEntity> call = serviceApi.createUser(entity, key);
         call.enqueue(new Callback<JUserInfoEntity>() {
             @Override
             public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
@@ -61,20 +63,52 @@ public class JUserInfoApiController {
             }
         });
     }
+    
+    public void updateUser(JUserInfoEntity entity, String key, IUserInfoUpdateUserListener listener) {
+        listenerUpdateUser = listener;
+        JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
+        Call<JUserInfoEntity> call = serviceApi.updateUser(entity, key);
+        call.enqueue(new Callback<JUserInfoEntity>() {
+            @Override
+            public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
+                switch (response.code()) {
+                     //OK
+                    case 200:
+                        JUserInfoEntity entity200 = response.body();
+                        listenerUpdateUser.ok(entity200);
+                        break;
+                    //NO CONTENT
+                    case 204:
+                        listenerUpdateUser.noContent();
+                        break;
+                    default:
+                        listenerUpdateUser.unknow();
+                        break;                        
+                        
+                }
+            }
 
-    public void getUserList(String domainId, String groupId, IUserInfoGetUserListListener listener) {
+            @Override
+            public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
+                listenerUpdateUser.failure(thrwbl.getMessage());
+            }
+        });
+    }
+    
+
+    public void getUserList(String domainId, String groupId, String key, IUserInfoGetUserListListener listener) {
         listenerGetUserList = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
-        Call<LinkedList<JUserInfoEntity>> call = serviceApi.getUserList(domainId, groupId);
+        Call<LinkedList<JUserInfoEntity>> call = serviceApi.getUserList(domainId, groupId, key);
         call.enqueue(new Callback<LinkedList<JUserInfoEntity>>() {
             @Override
             public void onResponse(Call<LinkedList<JUserInfoEntity>> call, Response<LinkedList<JUserInfoEntity>> response) {
                 switch (response.code()) {
                     //OK
                     case 200:
-                        LinkedList<JUserInfoEntity> list = null;
-                        list = response.body();
-                        listenerGetUserList.ok(list);
+                        LinkedList<JUserInfoEntity> list200 = null;
+                        list200 = response.body();
+                        listenerGetUserList.ok(list200);
                         break;
                     //NO CONTENT
                     case 204:
