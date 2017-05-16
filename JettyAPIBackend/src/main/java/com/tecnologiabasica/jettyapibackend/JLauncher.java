@@ -23,7 +23,7 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
  *
  * @author afonso
  */
-public class JServerLauncher {
+public class JLauncher {
 
     public static void main(String[] args) {
         int port = 8081;
@@ -46,7 +46,7 @@ public class JServerLauncher {
         HttpConfiguration https = new HttpConfiguration();
         https.addCustomizer(new SecureRequestCustomizer());
         SslContextFactory sslContextFactory = new SslContextFactory();
-        sslContextFactory.setKeyStorePath(JServerLauncher.class.getResource(
+        sslContextFactory.setKeyStorePath(JLauncher.class.getResource(
                 "/keystore.jks").toExternalForm());
         sslContextFactory.setKeyStorePassword("123456");
         sslContextFactory.setKeyManagerPassword("123456");
@@ -71,7 +71,7 @@ public class JServerLauncher {
             JMainApplication.getInstance();
             server.join();
         } catch (Exception ex) {            
-            Logger.getLogger(JServerLauncher.class.getName()).error(ex);
+            Logger.getLogger(JLauncher.class.getName()).error(ex);
             System.exit(1);
         }
     }

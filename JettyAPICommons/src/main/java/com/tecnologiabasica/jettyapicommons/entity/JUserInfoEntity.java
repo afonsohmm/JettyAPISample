@@ -21,6 +21,11 @@ public class JUserInfoEntity extends JGenericInfoEntity {
     private String userPassword;
     private String userToken;
 
+    @Override
+    public String toString() {
+        return "JUserInfoEntity{" + "userName=" + userName + ", userPassword=" + userPassword + ", userToken=" + userToken + '}';
+    }
+
     public JUserInfoEntity() {
 
     }

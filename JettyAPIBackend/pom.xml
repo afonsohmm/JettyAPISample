@@ -72,7 +72,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.tecnologiabasica.jettyapibackend.JServerLauncher</mainClass>
+                            <mainClass>com.tecnologiabasica.jettyapibackend.JLauncher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -110,7 +110,7 @@
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                 <transformer
                                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.tecnologiabasica.jettyapibackend.JServerLauncher</mainClass>
+                                    <mainClass>com.tecnologiabasica.jettyapibackend.JLauncher</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

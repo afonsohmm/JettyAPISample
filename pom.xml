@@ -53,5 +53,6 @@
         <module>JettyAPICommons</module>
         <module>JettyAPIDatabase</module>
         <module>JettyAPIClient</module>
+        <module>JettyAPITest</module>
     </modules>
 </project>
