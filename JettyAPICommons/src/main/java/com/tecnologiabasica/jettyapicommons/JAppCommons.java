@@ -23,7 +23,7 @@ public class JAppCommons {
     public static final String PRODUCT_NAME = "JettyAPITemplate";
     public static final String COMPANY = "Powered by Tecnologia Básica";
 
-    public static String URL_API = "https://localhost:8081/";
+    public static String URL_API = "http://localhost:8080/";
     public static String URL_UI = "https://localhost/";
 
     public static final String API_TOKEN = "jetty";

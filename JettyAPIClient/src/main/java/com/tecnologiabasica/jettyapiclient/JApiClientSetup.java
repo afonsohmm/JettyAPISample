@@ -32,37 +32,7 @@ public class JApiClientSetup {
 
     public static Retrofit getApiClient() {
 
-        TrustManagerFactory trustManagerFactory = null;
-        try {
-            trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(JApiClientSetup.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            trustManagerFactory.init(readKeyStore());
-        } catch (KeyStoreException ex) {
-            Logger.getLogger(JApiClientSetup.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
-        if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
-            throw new IllegalStateException("Unexpected default trust managers:" + Arrays.toString(trustManagers));
-        }
-        X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
-        SSLContext sslContext = null;
-        try {
-            sslContext = SSLContext.getInstance("SSL");
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(JApiClientSetup.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            sslContext.init(null, new TrustManager[]{trustManager}, null);
-        } catch (KeyManagementException ex) {
-            Logger.getLogger(JApiClientSetup.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
         OkHttpClient okClient = new OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory, trustManager)
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Interceptor.Chain chain) throws IOException {
@@ -87,48 +57,6 @@ public class JApiClientSetup {
                 .build();
 
         return client;
-    }
-
-    private static KeyStore readKeyStore() {
-        KeyStore ks = null;
-        try {
-            ks = KeyStore.getInstance(KeyStore.getDefaultType());
-        } catch (KeyStoreException ex) {
-            Logger.getLogger(JApiClientSetup.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        // get user password and file input stream
-        String pass = "123456";
-        char[] password = pass.toCharArray();
-
-        java.io.FileInputStream fis = null;
-        try {
-            try {
-                String keyPath = "/home/afonso/Downloads/keystore.jks";
-                File file = new File(keyPath);
-                if (file.exists()) {
-                    fis = new java.io.FileInputStream(keyPath);
-                }
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(JApiClientSetup.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            ks.load(fis, password);
-        } catch (IOException ex) {
-            Logger.getLogger(JApiClientSetup.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(JApiClientSetup.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CertificateException ex) {
-            Logger.getLogger(JApiClientSetup.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(JApiClientSetup.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        return ks;
     }
 
 }
