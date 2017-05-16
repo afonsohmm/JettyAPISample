@@ -33,8 +33,8 @@ public class JMainApplication implements Runnable {
     private ScheduledExecutorService scheduler = null;
     private ScheduledFuture<?> scheduleHandler = null;
     private String dataBaseName = "databasetest";
-    
-    private CreateUserListener createUserListener = new CreateUserListener(); 
+
+    private CreateUserListener createUserListener = new CreateUserListener();
     private GetUserListListener getUserListListener = new GetUserListListener();
 
     public static JMainApplication getInstance() {
@@ -55,8 +55,6 @@ public class JMainApplication implements Runnable {
 
             scheduler = Executors.newScheduledThreadPool(1, customThreadfactory);
             scheduleHandler = scheduler.schedule(this, 1, TimeUnit.SECONDS);
-            
-            
 
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override
@@ -75,7 +73,7 @@ public class JMainApplication implements Runnable {
     public void run() {
         try {
             JUserInfoEntity user = new JUserInfoEntity();
-            user.setEmail("email@" + DateTime.now().toString());
+            user.setEmail(DateTime.now().getMillis() + "@gmail.com");
             user.setUserName("name: " + DateTime.now().getMillis());
             user.setUserToken("token: " + DateTime.now().getMillis());
             user.setUserPassword("password: " + DateTime.now().getMillis());
@@ -88,7 +86,7 @@ public class JMainApplication implements Runnable {
         }
         scheduleHandler = scheduler.schedule(this, 1, TimeUnit.SECONDS);
     }
-    
+
     private class CreateUserListener implements IUserInfoCreateUserListener {
 
         @Override
@@ -98,56 +96,53 @@ public class JMainApplication implements Runnable {
 
         @Override
         public void badRequest() {
-            
+            Logger.getLogger(JMainApplication.class).info("Email informado não é válido.");
         }
 
         @Override
         public void conflict() {
-            
+            Logger.getLogger(JMainApplication.class).info("Email informado já existe.");
         }
 
         @Override
         public void notAcceptable() {
-            
+            Logger.getLogger(JMainApplication.class).info("Não foi possível cadastrar usuário.");
         }
 
         @Override
         public void unknow() {
-            
+            Logger.getLogger(JMainApplication.class).info("Resposta desconhecida.");
         }
 
         @Override
         public void failure(String message) {
             Logger.getLogger(JMainApplication.class).error(message);
         }
-        
+
     }
-    
+
     private class GetUserListListener implements IUserInfoGetUserListListener {
 
         @Override
         public void ok(LinkedList<JUserInfoEntity> list) {
-            for (Iterator<JUserInfoEntity> iterator = list.iterator(); iterator.hasNext();) {
-                JUserInfoEntity next = iterator.next();
-                Logger.getLogger(JMainApplication.class).info(next.toString());
-            }
+            Logger.getLogger(JMainApplication.class).info("Lista de usuários: " + list.size());
         }
 
         @Override
         public void noContent() {
-            
+            Logger.getLogger(JMainApplication.class).info("Não há usuários cadastrados.");
         }
 
         @Override
         public void unknow() {
-            
+            Logger.getLogger(JMainApplication.class).info("Resposta desconhecida.");
         }
 
         @Override
         public void failure(String message) {
-            
+            Logger.getLogger(JMainApplication.class).error(message);
         }
-        
+
     }
 
 }

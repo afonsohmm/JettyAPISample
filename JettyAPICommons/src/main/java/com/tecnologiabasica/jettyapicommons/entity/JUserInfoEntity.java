@@ -23,7 +23,8 @@ public class JUserInfoEntity extends JGenericInfoEntity {
 
     @Override
     public String toString() {
-        return "JUserInfoEntity{" + "userName=" + userName + ", userPassword=" + userPassword + ", userToken=" + userToken + '}';
+        String genericToString = " JGenericInfoEntity{" + "id=" + id + ", remoteId=" + remoteId + ", dateTimeReceived=" + dateTimeReceived + ", dateTime=" + dateTime + ", dateOnly=" + dateOnly + ", timeOnly=" + timeOnly + ", hourOfDay=" + hourOfDay + ", minutesOfHour=" + minutesOfHour + ", dayOfWeek=" + dayOfWeek + ", dayOfMonth=" + dayOfMonth + ", monthOfYear=" + monthOfYear + ", year=" + year + ", hourOfDayString=" + hourOfDayString + ", dateTimeString=" + dateTimeString + ", dateOnlyString=" + dateOnlyString + ", timeOnlyString=" + timeOnlyString + ", dayOfWeekString=" + dayOfWeekString + ", email=" + email + ", domainId=" + domainId + ", groupId=" + groupId + '}';
+        return "JUserInfoEntity{" + "userName=" + userName + ", userPassword=" + userPassword + ", userToken=" + userToken + '}' + genericToString;
     }
 
     public JUserInfoEntity() {

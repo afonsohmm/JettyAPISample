@@ -26,8 +26,8 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 public class JLauncher {
 
     public static void main(String[] args) {
-        int port = 8081;
-        int portSSL = 8080;
+        int port = 8080;
+        int portSSL = 8081;
         if (args.length >= 1) {
             port = Integer.parseInt(args[0]);
         }
