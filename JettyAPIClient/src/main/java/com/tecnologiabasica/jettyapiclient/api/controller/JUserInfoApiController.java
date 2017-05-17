@@ -25,10 +25,10 @@ public class JUserInfoApiController {
     private IUserInfoUpdateDeleteUserListener listenerUpdateDeleteUser = null;
     private IUserInfoGetUserListListener listenerGetUserList = null;
 
-    public void createUser(JUserInfoEntity entity, String key, IUserInfoCreateUserListener listener) {
+    public void createUser(JUserInfoEntity entity, IUserInfoCreateUserListener listener) {
         listenerCreateUser = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
-        Call<JUserInfoEntity> call = serviceApi.createUser(entity, key);
+        Call<JUserInfoEntity> call = serviceApi.createUser(entity);
         call.enqueue(new Callback<JUserInfoEntity>() {
             @Override
             public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
@@ -64,10 +64,10 @@ public class JUserInfoApiController {
         });
     }
     
-    public void updateUser(JUserInfoEntity entity, String key, IUserInfoUpdateDeleteUserListener listener) {
+    public void updateUser(JUserInfoEntity entity, IUserInfoUpdateDeleteUserListener listener) {
         listenerUpdateDeleteUser = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
-        Call<JUserInfoEntity> call = serviceApi.updateUser(entity, key);
+        Call<JUserInfoEntity> call = serviceApi.updateUser(entity);
         call.enqueue(new Callback<JUserInfoEntity>() {
             @Override
             public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
@@ -95,10 +95,10 @@ public class JUserInfoApiController {
         });
     }
 
-    public void deleteUser(JUserInfoEntity entity, String key, IUserInfoUpdateDeleteUserListener listener) {
+    public void deleteUser(JUserInfoEntity entity, IUserInfoUpdateDeleteUserListener listener) {
         listenerUpdateDeleteUser = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
-        Call<JUserInfoEntity> call = serviceApi.deleteUser(entity, key);
+        Call<JUserInfoEntity> call = serviceApi.deleteUser(entity);
         call.enqueue(new Callback<JUserInfoEntity>() {
             @Override
             public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
@@ -126,10 +126,10 @@ public class JUserInfoApiController {
         });
     }
 
-    public void getUserList(String domainId, String groupId, String key, IUserInfoGetUserListListener listener) {
+    public void getUserList(String domainId, String groupId, IUserInfoGetUserListListener listener) {
         listenerGetUserList = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
-        Call<LinkedList<JUserInfoEntity>> call = serviceApi.getUserList(domainId, groupId, key);
+        Call<LinkedList<JUserInfoEntity>> call = serviceApi.getUserList(domainId, groupId);
         call.enqueue(new Callback<LinkedList<JUserInfoEntity>>() {
             @Override
             public void onResponse(Call<LinkedList<JUserInfoEntity>> call, Response<LinkedList<JUserInfoEntity>> response) {

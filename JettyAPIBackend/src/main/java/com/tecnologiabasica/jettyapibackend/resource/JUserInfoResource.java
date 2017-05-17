@@ -33,10 +33,10 @@ import org.joda.time.DateTime;
 @Path("/userinfo")
 public class JUserInfoResource {
 
-    @Path("/v1/createUser/{key}")
+    @Path("/v1/createUser/")
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public Response createUser(@Context HttpServletRequest request, JUserInfoEntity entity, @PathParam("key") String key) {
+    public Response createUser(@Context HttpServletRequest request, JUserInfoEntity entity) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 
@@ -68,10 +68,10 @@ public class JUserInfoResource {
         return response;
     }
 
-    @Path("/v1/updateUser/{key}")
+    @Path("/v1/updateUser/")
     @Consumes(MediaType.APPLICATION_JSON)
     @PUT
-    public Response updateUser(@Context HttpServletRequest request, JUserInfoEntity entity, @PathParam("key") String key) {
+    public Response updateUser(@Context HttpServletRequest request, JUserInfoEntity entity) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 
@@ -91,10 +91,10 @@ public class JUserInfoResource {
         return response;
     }
     
-    @Path("/v1/deleteUser/{key}")
+    @Path("/v1/deleteUser/")
     @Consumes(MediaType.APPLICATION_JSON)
     @DELETE
-    public Response deleteUser(@Context HttpServletRequest request, JUserInfoEntity entity, @PathParam("key") String key) {
+    public Response deleteUser(@Context HttpServletRequest request, JUserInfoEntity entity) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 
@@ -117,8 +117,8 @@ public class JUserInfoResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/v1/getUserList/{key}")
-    public Response getUserList(@Context HttpServletRequest request, @QueryParam("domainId") String domainId, @QueryParam("groupId") String groupId, @PathParam("key") String key) {
+    @Path("/v1/getUserList/")
+    public Response getUserList(@Context HttpServletRequest request, @QueryParam("domainId") String domainId, @QueryParam("groupId") String groupId) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 

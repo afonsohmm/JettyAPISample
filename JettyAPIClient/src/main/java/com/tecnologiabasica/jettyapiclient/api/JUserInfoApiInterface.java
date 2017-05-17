@@ -36,17 +36,17 @@ public class JUserInfoApiInterface {
     }
 
     public interface UserInfoApiInterface {
-        @POST("api/userinfo/v1/createUser/{key}")
-        Call<JUserInfoEntity> createUser(@Body JUserInfoEntity entity, @Path("key") String key);
+        @POST("api/userinfo/v1/createUser/")
+        Call<JUserInfoEntity> createUser(@Body JUserInfoEntity entity);
 
-        @PUT("api/userinfo/v1/updateUser/{key}")
-        Call<JUserInfoEntity> updateUser(@Body JUserInfoEntity entity, @Path("key") String key);        
+        @PUT("api/userinfo/v1/updateUser/")
+        Call<JUserInfoEntity> updateUser(@Body JUserInfoEntity entity);        
 
-        @DELETE("api/userinfo/v1/deleteUser/{key}")
-        Call<JUserInfoEntity> deleteUser(@Body JUserInfoEntity entity, @Path("key") String key);        
+        @DELETE("api/userinfo/v1/deleteUser/")
+        Call<JUserInfoEntity> deleteUser(@Query("entity") JUserInfoEntity entity);        
         
-        @GET("api/userinfo/v1/getUserList/{key}")
-        Call<LinkedList<JUserInfoEntity>> getUserList(@Query("domainId") String domainId, @Query("groupId") String groupId, @Path("key") String key);        
+        @GET("api/userinfo/v1/getUserList/")
+        Call<LinkedList<JUserInfoEntity>> getUserList(@Query("domainId") String domainId, @Query("groupId") String groupId);        
     }
 
 }
