@@ -95,10 +95,10 @@ public class JUserInfoApiController {
         });
     }
 
-    public void deleteUser(JUserInfoEntity entity, IUserInfoUpdateDeleteUserListener listener) {
+    public void deleteUser(String email, IUserInfoUpdateDeleteUserListener listener) {
         listenerUpdateDeleteUser = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
-        Call<JUserInfoEntity> call = serviceApi.deleteUser(entity);
+        Call<JUserInfoEntity> call = serviceApi.deleteUser(email);
         call.enqueue(new Callback<JUserInfoEntity>() {
             @Override
             public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {

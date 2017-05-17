@@ -15,7 +15,6 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -43,7 +42,7 @@ public class JUserInfoApiInterface {
         Call<JUserInfoEntity> updateUser(@Body JUserInfoEntity entity);        
 
         @DELETE("api/userinfo/v1/deleteUser/")
-        Call<JUserInfoEntity> deleteUser(@Query("entity") JUserInfoEntity entity);        
+        Call<JUserInfoEntity> deleteUser(@Query("email") String email);        
         
         @GET("api/userinfo/v1/getUserList/")
         Call<LinkedList<JUserInfoEntity>> getUserList(@Query("domainId") String domainId, @Query("groupId") String groupId);        

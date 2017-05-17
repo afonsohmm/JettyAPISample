@@ -17,7 +17,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -75,12 +74,11 @@ public class JUserInfoResource {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 
-        entity.setId(entity.getRemoteId());        
-        
+        entity.setId(entity.getRemoteId());
+
         long id = JUserInfoDAO.getInstance().update(entity);
-        if (id != -1) {            
-            response = Response.status(Response.Status.OK).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
-            JUserInfoBusiness.getInstance().createUser(entity);
+        if (id != -1) {
+            response = Response.status(Response.Status.OK).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();            
         } else {
             response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
         }
@@ -90,22 +88,27 @@ public class JUserInfoResource {
         }
         return response;
     }
-    
+
     @Path("/v1/deleteUser/")
     @Consumes(MediaType.APPLICATION_JSON)
     @DELETE
-    public Response deleteUser(@Context HttpServletRequest request, JUserInfoEntity entity) {
+    public Response deleteUser(@Context HttpServletRequest request, @QueryParam("email") String email) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 
-        entity.setId(entity.getRemoteId());        
-        
-        long id = JUserInfoDAO.getInstance().delete(entity);
-        if (id != -1) {            
-            response = Response.status(Response.Status.OK).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
-            JUserInfoBusiness.getInstance().createUser(entity);
+        JUserInfoEntity entity = JUserInfoDAO.getInstance().getUser(email);
+
+        if (entity != null) {
+
+            long id = JUserInfoDAO.getInstance().delete(entity);
+            if (id != -1) {
+                response = Response.status(Response.Status.OK).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();                
+            } else {
+                response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+            }
         } else {
-            response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+            entity = new JUserInfoEntity();
+            response = Response.status(Response.Status.NOT_FOUND).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
         }
 
         if (response != null) {
@@ -113,11 +116,10 @@ public class JUserInfoResource {
         }
         return response;
     }
-    
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/v1/getUserList/")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
     public Response getUserList(@Context HttpServletRequest request, @QueryParam("domainId") String domainId, @QueryParam("groupId") String groupId) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;

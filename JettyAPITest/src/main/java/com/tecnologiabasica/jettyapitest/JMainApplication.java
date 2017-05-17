@@ -130,10 +130,10 @@ public class JMainApplication implements Runnable {
         @Override
         public void ok(LinkedList<JUserInfoEntity> list) {
             Logger.getLogger(JMainApplication.class).info("Total de usuários cadastrados: " + list.size());
-            if(list.size() > 5) {
+            if(list.size() > 1) {
                 JUserInfoEntity entity = list.getFirst();
                 JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-                userInfoApiController.deleteUser(entity, updateUserInfoListener);
+                userInfoApiController.deleteUser(entity.getEmail(), updateUserInfoListener);
             }
         }
 
