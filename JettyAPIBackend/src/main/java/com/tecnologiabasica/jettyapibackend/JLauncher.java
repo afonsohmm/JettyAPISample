@@ -47,7 +47,7 @@ public class JLauncher {
         https.addCustomizer(new SecureRequestCustomizer());
         SslContextFactory sslContextFactory = new SslContextFactory();
         sslContextFactory.setKeyStorePath(JLauncher.class.getResource(
-                "/keystore.jks").toExternalForm());
+                "/jettyapisample.jks").toExternalForm());
         sslContextFactory.setKeyStorePassword("123456");
         sslContextFactory.setKeyManagerPassword("123456");
         ServerConnector sslConnector = new ServerConnector(server,

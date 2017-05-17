@@ -1,10 +1,15 @@
 KEY GENERATION
 
 pass: 123456
+keytool path: /usr/java/default/bin/keytool
+domain: localhost
 
-openssl genrsa -des3 -out jetty.key
-openssl req -new -x509 -key jetty.key -out jetty.crt
-keytool -keystore keystore -import -alias jetty -file jetty.crt -trustcacerts
-openssl req -new -key jetty.key -out jetty.csr
-openssl pkcs12 -inkey jetty.key -in jetty.crt -export -out jetty.pkcs12
-keytool -importkeystore -srckeystore jetty.pkcs12 -srcstoretype PKCS12 -destkeystore keystore
+openssl genrsa -des3 -out jettyapisample.key
+openssl req -new -x509 -key jettyapisample.key -out jettyapisample.crt
+/usr/java/default/bin/keytool -keystore keystore -import -alias jettyapisample -file jettyapisample.crt -trustcacerts
+openssl req -new -key jettyapisample.key -out jettyapisample.csr
+openssl pkcs12 -inkey jettyapisample.key -in jettyapisample.crt -export -out jettyapisample.pkcs12
+/usr/java/default/bin/keytool -importkeystore -srckeystore jettyapisample.pkcs12 -srcstoretype PKCS12 -destkeystore jettyapisample.jks
+sudo cp keystore /usr/java/default/jre/lib/security/cacerts
+
+Essa chave é apenas de teste. Você deve comprar uma chave válida
