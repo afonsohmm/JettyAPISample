@@ -23,7 +23,7 @@ public class JUserInfoEntity extends JGenericInfoEntity {
 
     @Override
     public String toString() {
-        return "JUserInfoEntity{" + "dateTimeString=" + dateTimeString + "userName=" + userName  + "email=" + email + ", userPassword=" + userPassword + ", userToken=" + userToken + '}';
+        return "JUserInfoEntity{" + "id=" + id  + ", remoteId=" + remoteId + ", dateTimeString=" + dateTimeString + ", userName=" + userName  + ", email=" + email + ", userPassword=" + userPassword + ", userToken=" + userToken + '}';
     }
     
     public JUserInfoEntity() {

@@ -7,6 +7,7 @@ package com.tecnologiabasica.jettyapitest;
 
 import com.tecnologiabasica.jettyapiclient.api.controller.JUserInfoApiController;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoCreateUserListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoDeleteUserListener;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoGetUserListListener;
 import com.tecnologiabasica.jettyapicommons.JAppCommons;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
@@ -21,7 +22,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateDeleteUserListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateUserListener;
 
 /**
  *
@@ -130,10 +131,10 @@ public class JMainApplication implements Runnable {
         @Override
         public void ok(LinkedList<JUserInfoEntity> list) {
             Logger.getLogger(JMainApplication.class).info("Total de usuários cadastrados: " + list.size());
-            if(list.size() > 1) {
+            if (list.size() > 1) {
                 JUserInfoEntity entity = list.getFirst();
                 JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-                userInfoApiController.deleteUser(entity.getEmail(), updateUserInfoListener);
+                userInfoApiController.deleteUser(entity.getEmail(), deleteUserInfoListener);
             }
         }
 
@@ -153,7 +154,7 @@ public class JMainApplication implements Runnable {
         }
     }
 
-    private class UpdateUserInfoListener implements IUserInfoUpdateDeleteUserListener {
+    private class UpdateUserInfoListener implements IUserInfoUpdateUserListener {
 
         @Override
         public void ok(JUserInfoEntity entity) {
@@ -178,8 +179,8 @@ public class JMainApplication implements Runnable {
         }
 
     }
-    
-    private class DeleteUserInfoListener implements IUserInfoUpdateDeleteUserListener {
+
+    private class DeleteUserInfoListener implements IUserInfoDeleteUserListener {
 
         @Override
         public void ok(JUserInfoEntity entity) {
@@ -188,12 +189,17 @@ public class JMainApplication implements Runnable {
 
         @Override
         public void noContent() {
-            Logger.getLogger(JMainApplication.class).info("Usuário não encontrado");
+            Logger.getLogger(JMainApplication.class).info("Usuário não foi apagado.");
+        }
+
+        @Override
+        public void notFound() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void unknow() {
-            Logger.getLogger(JMainApplication.class).info("Resposta desconhecida");
+            Logger.getLogger(JMainApplication.class).info("Usuário não foi encontrado.");
         }
 
         @Override

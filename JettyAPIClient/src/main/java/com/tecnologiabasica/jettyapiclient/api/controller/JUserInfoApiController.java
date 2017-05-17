@@ -13,7 +13,8 @@ import retrofit2.Response;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoGetUserListListener;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoCreateUserListener;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateDeleteUserListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoDeleteUserListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateUserListener;
 
 /**
  *
@@ -22,7 +23,8 @@ import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateDeleteUse
 public class JUserInfoApiController {
 
     private IUserInfoCreateUserListener listenerCreateUser = null;
-    private IUserInfoUpdateDeleteUserListener listenerUpdateDeleteUser = null;
+    private IUserInfoUpdateUserListener listenerUpdateUser = null;
+    private IUserInfoDeleteUserListener listenerDeleteUser = null;
     private IUserInfoGetUserListListener listenerGetUserList = null;
 
     public void createUser(JUserInfoEntity entity, IUserInfoCreateUserListener listener) {
@@ -64,8 +66,8 @@ public class JUserInfoApiController {
         });
     }
     
-    public void updateUser(JUserInfoEntity entity, IUserInfoUpdateDeleteUserListener listener) {
-        listenerUpdateDeleteUser = listener;
+    public void updateUser(JUserInfoEntity entity, IUserInfoUpdateUserListener listener) {
+        listenerUpdateUser = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
         Call<JUserInfoEntity> call = serviceApi.updateUser(entity);
         call.enqueue(new Callback<JUserInfoEntity>() {
@@ -75,14 +77,14 @@ public class JUserInfoApiController {
                      //OK
                     case 200:
                         JUserInfoEntity entity200 = response.body();
-                        listenerUpdateDeleteUser.ok(entity200);
+                        listenerUpdateUser.ok(entity200);
                         break;
                     //NO CONTENT
                     case 204:
-                        listenerUpdateDeleteUser.noContent();
+                        listenerUpdateUser.noContent();
                         break;
                     default:
-                        listenerUpdateDeleteUser.unknow();
+                        listenerUpdateUser.unknow();
                         break;                        
                         
                 }
@@ -90,13 +92,13 @@ public class JUserInfoApiController {
 
             @Override
             public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
-                listenerUpdateDeleteUser.failure(thrwbl.getMessage());
+                listenerUpdateUser.failure(thrwbl.getMessage());
             }
         });
     }
 
-    public void deleteUser(String email, IUserInfoUpdateDeleteUserListener listener) {
-        listenerUpdateDeleteUser = listener;
+    public void deleteUser(String email, IUserInfoDeleteUserListener listener) {
+        listenerDeleteUser = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
         Call<JUserInfoEntity> call = serviceApi.deleteUser(email);
         call.enqueue(new Callback<JUserInfoEntity>() {
@@ -106,14 +108,18 @@ public class JUserInfoApiController {
                      //OK
                     case 200:
                         JUserInfoEntity entity200 = response.body();
-                        listenerUpdateDeleteUser.ok(entity200);
+                        listenerDeleteUser.ok(entity200);
                         break;
                     //NO CONTENT
                     case 204:
-                        listenerUpdateDeleteUser.noContent();
+                        listenerDeleteUser.noContent();
                         break;
+                    //NOT FOUND
+                    case 404:
+                        listenerDeleteUser.notFound();
+                        break;                        
                     default:
-                        listenerUpdateDeleteUser.unknow();
+                        listenerDeleteUser.unknow();
                         break;                        
                         
                 }
@@ -121,7 +127,7 @@ public class JUserInfoApiController {
 
             @Override
             public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
-                listenerUpdateDeleteUser.failure(thrwbl.getMessage());
+                listenerDeleteUser.failure(thrwbl.getMessage());
             }
         });
     }
