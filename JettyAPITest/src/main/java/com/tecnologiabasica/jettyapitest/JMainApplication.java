@@ -24,6 +24,8 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateUserListener;
 import com.tecnologiabasica.jettyapiwebsocket.client.JWebSocketClient;
+import com.tecnologiabasica.jettyapiwebsocket.listener.IWebSocketClientListener;
+import org.eclipse.jetty.websocket.api.Session;
 
 /**
  *
@@ -41,6 +43,9 @@ public class JMainApplication implements Runnable {
     private UpdateUserInfoListener updateUserInfoListener = new UpdateUserInfoListener();
     private DeleteUserInfoListener deleteUserInfoListener = new DeleteUserInfoListener();
 
+    private JWebSocketClient webSocketClient = null;
+    private WebSocketClientListener webSocketClientListener = new WebSocketClientListener();
+
     public static JMainApplication getInstance() {
         if (instance == null) {
             instance = new JMainApplication();
@@ -54,11 +59,12 @@ public class JMainApplication implements Runnable {
 
         if (JDatabaseConnector.getInstance().open(JAppCommons.getHomeDir(), dataBaseName, EDatabaseType.H2DB) != -1) {
 
-            JWebSocketClient.getInstance().start();
-            
+            webSocketClient = new JWebSocketClient();
+            webSocketClient.start(webSocketClientListener);
+
             ThreadFactory customThreadfactory = new JThreadFactoryBuilder()
-                    .setNamePrefix("thread_JMainApplication_scheduler").build();           
-            
+                    .setNamePrefix("thread_JMainApplication_scheduler").build();
+
             scheduler = Executors.newScheduledThreadPool(1, customThreadfactory);
             scheduleHandler = scheduler.schedule(this, 1, TimeUnit.SECONDS);
 
@@ -87,8 +93,8 @@ public class JMainApplication implements Runnable {
             entity.setGroupId("MyGroup");
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
             userInfoApiController.createUser(entity, createUserInfoListener);
-            JWebSocketClient.getInstance().sendMessage(entity.toString());
-            
+            webSocketClient.sendMessage(entity.toString());
+
         } catch (Exception ex) {
             Logger.getLogger(JMainApplication.class).error(ex);
         }
@@ -210,6 +216,30 @@ public class JMainApplication implements Runnable {
         @Override
         public void failure(String message) {
             Logger.getLogger(JMainApplication.class).info("Não foi possível apagar usuário: " + message);
+        }
+
+    }
+
+    private class WebSocketClientListener implements IWebSocketClientListener {
+
+        @Override
+        public void onWebSocketConnect(Session session) {
+            Logger.getLogger(JMainApplication.class).info("onWebSocketConnect: " + session.getRemoteAddress().getHostName());
+        }
+
+        @Override
+        public void onWebSocketClose(int statusCode, String reason, Session session) {
+            Logger.getLogger(JMainApplication.class).info("onWebSocketClose: statusCode: " + statusCode + " - reason: " + reason + " - session: " + session.getRemoteAddress().getHostName());
+        }
+
+        @Override
+        public void onWebSocketError(Throwable cause, Session session) {
+            Logger.getLogger(JMainApplication.class).info("onWebSocketError: cause: " + cause.getMessage() + " - session: " + session.getRemoteAddress().getHostName());
+        }
+
+        @Override
+        public void onWebSocketMessageReceive(String message, Session session) {
+            Logger.getLogger(JMainApplication.class).info("onWebSocketMessageReceive: message: " + message + " - session: " + session.getRemoteAddress().getHostName());
         }
 
     }

@@ -17,7 +17,8 @@ public class JWebSocketServerReceiver implements WebSocketListener {
     @Override
     public void onWebSocketConnect(Session session) {
         this.session = session;
-        Logger.getLogger(JWebSocketServerReceiver.class).info("WebSocket Connect: " + session);        
+        Logger.getLogger(JWebSocketServerReceiver.class).info("WebSocket Connect: " + session);  
+        sendMessage("Cliente conectado: " + session.getRemoteAddress().getHostName());
     }
 
     @Override

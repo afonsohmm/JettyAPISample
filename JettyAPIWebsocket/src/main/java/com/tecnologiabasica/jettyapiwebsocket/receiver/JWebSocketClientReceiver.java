@@ -1,33 +1,44 @@
 package com.tecnologiabasica.jettyapiwebsocket.receiver;
 
+import com.tecnologiabasica.jettyapiwebsocket.listener.IWebSocketClientListener;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 
 public class JWebSocketClientReceiver implements WebSocketListener {
 
+    private IWebSocketClientListener listener = null;
+    
     private Session session;
+    
+    private JWebSocketClientReceiver() {
+        
+    }
+    
+    public JWebSocketClientReceiver (IWebSocketClientListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
-        this.session = null;
-        Logger.getLogger(JWebSocketClientReceiver.class).info("WebSocket Close: " + statusCode + " - " + reason);
+        listener.onWebSocketClose(statusCode, reason, session);
+        this.session = null;        
     }
 
     @Override
     public void onWebSocketConnect(Session session) {
         this.session = session;
-        Logger.getLogger(JWebSocketClientReceiver.class).info("WebSocket Connect: " + session);
+        listener.onWebSocketConnect(this.session);        
     }
 
     @Override
     public void onWebSocketError(Throwable cause) {
-        Logger.getLogger(JWebSocketClientReceiver.class).warn("WebSocket Error: " + cause);
+        listener.onWebSocketError(cause, session);        
     }
 
     @Override
     public void onWebSocketText(String message) {
-        Logger.getLogger(JWebSocketClientReceiver.class).info("WebSocket receiveMessage: " + message);
+        listener.onWebSocketMessageReceive(message, session);        
     }
 
     @Override
@@ -35,28 +46,5 @@ public class JWebSocketClientReceiver implements WebSocketListener {
 
     }
 
-    public boolean sendMessage(String message) {
-        boolean returnValue = false;
-        if (session != null && session.isOpen()) {
-            try {
-                session.getRemote().sendString(message, null);
-                Logger.getLogger(JWebSocketClientReceiver.class).info("WebSocket sendMessage: " + message);
-                returnValue = true;
-            } catch (Exception ex) {
-                Logger.getLogger(JWebSocketClientReceiver.class).error(ex);
-            }
-        }
-        return returnValue;
-    }
-
-    public boolean isOpen() {
-        boolean returnValue = false;
-        if (session != null && session.isOpen()) {
-            returnValue = true;
-        } else {
-            returnValue = false;
-        }
-        return returnValue;
-    }
 
 }

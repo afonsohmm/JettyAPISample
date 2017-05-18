@@ -1,22 +1,7 @@
 package com.tecnologiabasica.jettyapiclient;
 
 import com.tecnologiabasica.jettyapicommons.JAppCommons;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -6,6 +6,7 @@
 package com.tecnologiabasica.jettyapiwebsocket.client;
 
 import com.tecnologiabasica.jettyapicommons.JAppCommons;
+import com.tecnologiabasica.jettyapiwebsocket.listener.IWebSocketClientListener;
 import com.tecnologiabasica.jettyapiwebsocket.receiver.JWebSocketClientReceiver;
 import java.io.IOException;
 import java.net.URI;
@@ -20,28 +21,33 @@ import org.eclipse.jetty.websocket.client.WebSocketClient;
  */
 public class JWebSocketClient {
 
-    private static JWebSocketClient instance = null;
     private WebSocketClient webSocketClient = null;
     private Session session = null;
     private URI uri = null;
+    private String endPoint = "events/";
+    private JWebSocketClientReceiver webSocketReceiver = null;
 
-    public static JWebSocketClient getInstance() {
-        if (instance == null) {
-            instance = new JWebSocketClient();
-        }
-        return instance;
-    }
-
-    private JWebSocketClient() {
-        uri = URI.create(JAppCommons.URL_WS + "events/");
+    public JWebSocketClient() {
         webSocketClient = new WebSocketClient();
     }
 
-    public void start() {
+    public String getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(String endPoint) {
+        if (endPoint.contains("/") == false) {
+            endPoint = endPoint + "/";
+        }
+        this.endPoint = endPoint;
+    }
+
+    public void start(IWebSocketClientListener listener) {
         try {
+            uri = URI.create(JAppCommons.URL_WS + endPoint);
             webSocketClient.start();
-            JWebSocketClientReceiver webSocketListener = new JWebSocketClientReceiver();
-            Future<Session> future = webSocketClient.connect(webSocketListener, uri);
+            webSocketReceiver = new JWebSocketClientReceiver(listener);
+            Future<Session> future = webSocketClient.connect(webSocketReceiver, uri);
             session = future.get();
         } catch (Exception ex) {
             Logger.getLogger(JWebSocketClient.class).error(ex);
@@ -61,14 +67,27 @@ public class JWebSocketClient {
         }
     }
 
-    public void sendMessage(String message) {
+    public boolean sendMessage(String message) {
+        boolean returnValue = false;
         if (session != null && session.isOpen()) {
             try {
                 session.getRemote().sendString(message);
+                returnValue = true;
             } catch (IOException ex) {
                 Logger.getLogger(JWebSocketClient.class).error(ex);
             }
         }
+        return returnValue;
+    }
+
+    public boolean isOpen() {
+        boolean returnValue = false;
+        if (session != null && session.isOpen()) {
+            returnValue = true;
+        } else {
+            returnValue = false;
+        }
+        return returnValue;
     }
 
 }
