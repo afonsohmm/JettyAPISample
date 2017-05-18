@@ -25,6 +25,7 @@ public class JAppCommons {
 
     public static String URL_API = "http://localhost:8080/";
     public static String URL_UI = "https://localhost/";
+    public static String URL_WS = "ws://localhost:8080/";
 
     public static final String API_TOKEN = "jetty";
 

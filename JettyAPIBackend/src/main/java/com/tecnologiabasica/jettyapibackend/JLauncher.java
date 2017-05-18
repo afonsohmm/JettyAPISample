@@ -7,6 +7,7 @@ package com.tecnologiabasica.jettyapibackend;
 
 import com.tecnologiabasica.jettyapicommons.JAppCommons;
 import com.tecnologiabasica.jettyapicommons.util.JLoggerUtil;
+import com.tecnologiabasica.jettyapiwebsocket.server.JWebSocketServlet;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -65,6 +66,10 @@ public class JLauncher {
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         server.setHandler(contextHandler);
         contextHandler.addServlet(servletHolder, "/api/*");
+        
+        // Adiciona o caminho do Websocket
+        ServletHolder holderEvents = new ServletHolder("ws-events", JWebSocketServlet.class);
+        contextHandler.addServlet(holderEvents, "/events/*");
 
         try {
             server.start();

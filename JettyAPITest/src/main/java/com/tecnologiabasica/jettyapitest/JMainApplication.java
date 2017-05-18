@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateUserListener;
+import com.tecnologiabasica.jettyapiwebsocket.client.JWebSocketClient;
 
 /**
  *
@@ -53,9 +54,11 @@ public class JMainApplication implements Runnable {
 
         if (JDatabaseConnector.getInstance().open(JAppCommons.getHomeDir(), dataBaseName, EDatabaseType.H2DB) != -1) {
 
+            JWebSocketClient.getInstance().start();
+            
             ThreadFactory customThreadfactory = new JThreadFactoryBuilder()
-                    .setNamePrefix("thread_JMainApplication_scheduler").build();
-
+                    .setNamePrefix("thread_JMainApplication_scheduler").build();           
+            
             scheduler = Executors.newScheduledThreadPool(1, customThreadfactory);
             scheduleHandler = scheduler.schedule(this, 1, TimeUnit.SECONDS);
 
@@ -84,6 +87,8 @@ public class JMainApplication implements Runnable {
             entity.setGroupId("MyGroup");
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
             userInfoApiController.createUser(entity, createUserInfoListener);
+            JWebSocketClient.getInstance().sendMessage(entity.toString());
+            
         } catch (Exception ex) {
             Logger.getLogger(JMainApplication.class).error(ex);
         }
