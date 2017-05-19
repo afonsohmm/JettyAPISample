@@ -13,14 +13,14 @@ import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
  */
 public interface IUserInfoDeleteUserListener {
 
-    public void ok(JUserInfoEntity entity);
+    public void onUserInfoDeletedSucessfully(JUserInfoEntity entity);
 
-    public void noContent();
+    public void onUserInfoDeleteError();
     
-    public void notFound();
+    public void onUserInfoNotFound();
 
-    public void unknow();
+    public void onUserInfoDeleteUnknow();
 
-    public void failure(String message);
+    public void onUserInfoDeleteFailure(String message);
 
 }

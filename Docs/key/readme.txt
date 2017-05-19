@@ -10,6 +10,5 @@ openssl req -new -x509 -key jettyapisample.key -out jettyapisample.crt
 openssl req -new -key jettyapisample.key -out jettyapisample.csr
 openssl pkcs12 -inkey jettyapisample.key -in jettyapisample.crt -export -out jettyapisample.pkcs12
 /usr/java/default/bin/keytool -importkeystore -srckeystore jettyapisample.pkcs12 -srcstoretype PKCS12 -destkeystore jettyapisample.jks
-sudo cp keystore /usr/java/default/jre/lib/security/cacerts
 
 Essa chave é apenas de teste. Você deve comprar uma chave válida

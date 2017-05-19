@@ -38,22 +38,22 @@ public class JUserInfoApiController {
                     //CREATED
                     case 201:
                         JUserInfoEntity entity201 = response.body();
-                        listenerCreateUser.created(entity201);
+                        listenerCreateUser.onUserInfoCreatedSucessfully(entity201);
                         break;
                     //BAD REQUEST
                     case 400:
-                        listenerCreateUser.badRequest();
+                        listenerCreateUser.onUserInfoEmailNotValid();
                         break;
                     //CONFLICT
                     case 409:
-                        listenerCreateUser.conflict();
+                        listenerCreateUser.onUserInfoEmailInUse();
                         break;
                     //NOT ACCEPTABLE
                     case 406:
-                        listenerCreateUser.notAcceptable();
+                        listenerCreateUser.onUserInfoCreateError();
                         break;                                            
                     default:
-                        listenerCreateUser.unknow();
+                        listenerCreateUser.onUserInfoCreateUnknow();
                         break;                        
                         
                 }
@@ -61,7 +61,7 @@ public class JUserInfoApiController {
 
             @Override
             public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
-                listenerCreateUser.failure(thrwbl.getMessage());
+                listenerCreateUser.onUserInfoCreateFailure(thrwbl.getMessage());
             }
         });
     }
@@ -77,14 +77,14 @@ public class JUserInfoApiController {
                      //OK
                     case 200:
                         JUserInfoEntity entity200 = response.body();
-                        listenerUpdateUser.ok(entity200);
+                        listenerUpdateUser.onUserInfoUpdatedSucessfully(entity200);
                         break;
                     //NO CONTENT
                     case 204:
-                        listenerUpdateUser.noContent();
+                        listenerUpdateUser.onUserInfoUpdateError();
                         break;
                     default:
-                        listenerUpdateUser.unknow();
+                        listenerUpdateUser.onUserInfoUpdateUnknow();
                         break;                        
                         
                 }
@@ -92,7 +92,7 @@ public class JUserInfoApiController {
 
             @Override
             public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
-                listenerUpdateUser.failure(thrwbl.getMessage());
+                listenerUpdateUser.onUserInfoUpdateFailure(thrwbl.getMessage());
             }
         });
     }
@@ -108,18 +108,18 @@ public class JUserInfoApiController {
                      //OK
                     case 200:
                         JUserInfoEntity entity200 = response.body();
-                        listenerDeleteUser.ok(entity200);
+                        listenerDeleteUser.onUserInfoDeletedSucessfully(entity200);
                         break;
                     //NO CONTENT
                     case 204:
-                        listenerDeleteUser.noContent();
+                        listenerDeleteUser.onUserInfoDeleteError();
                         break;
                     //NOT FOUND
                     case 404:
-                        listenerDeleteUser.notFound();
+                        listenerDeleteUser.onUserInfoNotFound();
                         break;                        
                     default:
-                        listenerDeleteUser.unknow();
+                        listenerDeleteUser.onUserInfoDeleteUnknow();
                         break;                        
                         
                 }
@@ -127,7 +127,7 @@ public class JUserInfoApiController {
 
             @Override
             public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
-                listenerDeleteUser.failure(thrwbl.getMessage());
+                listenerDeleteUser.onUserInfoDeleteFailure(thrwbl.getMessage());
             }
         });
     }
@@ -144,21 +144,21 @@ public class JUserInfoApiController {
                     case 200:
                         LinkedList<JUserInfoEntity> list200 = null;
                         list200 = response.body();
-                        listenerGetUserList.ok(list200);
+                        listenerGetUserList.onUserInfoListFound(list200);
                         break;
                     //NO CONTENT
                     case 204:
-                        listenerGetUserList.noContent();
+                        listenerGetUserList.onUserInfoListEmpty();
                         break;
                     default:
-                        listenerGetUserList.unknow();
+                        listenerGetUserList.onUserInfoListUnknow();
                         break;
                 }
             }
 
             @Override
             public void onFailure(Call<LinkedList<JUserInfoEntity>> call, Throwable thrwbl) {
-                listenerGetUserList.failure(thrwbl.getMessage());
+                listenerGetUserList.onUserInfoListFailure(thrwbl.getMessage());
             }
         });
     }

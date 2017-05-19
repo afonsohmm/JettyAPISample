@@ -14,12 +14,12 @@ import java.util.LinkedList;
  */
 public interface IUserInfoGetUserListListener {
 
-    public void ok(LinkedList<JUserInfoEntity> list);
+    public void onUserInfoListFound(LinkedList<JUserInfoEntity> list);
 
-    public void noContent();
+    public void onUserInfoListEmpty();
 
-    public void unknow();
+    public void onUserInfoListUnknow();
 
-    public void failure(String message);
+    public void onUserInfoListFailure(String message);
 
 }

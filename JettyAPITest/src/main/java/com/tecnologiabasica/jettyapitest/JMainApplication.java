@@ -104,7 +104,7 @@ public class JMainApplication implements Runnable {
     private class CreateUserInfoListener implements IUserInfoCreateUserListener {
 
         @Override
-        public void created(JUserInfoEntity entity) {
+        public void onUserInfoCreatedSucessfully(JUserInfoEntity entity) {
             Logger.getLogger(JMainApplication.class).info("Usuário criado: " + entity.toString());
             entity.setUserPassword("123456");
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
@@ -112,27 +112,27 @@ public class JMainApplication implements Runnable {
         }
 
         @Override
-        public void badRequest() {
+        public void onUserInfoEmailNotValid() {
             Logger.getLogger(JMainApplication.class).info("Email informado não é válido");
         }
 
         @Override
-        public void conflict() {
+        public void onUserInfoEmailInUse() {
             Logger.getLogger(JMainApplication.class).info("Email informado já está em uso");
         }
 
         @Override
-        public void notAcceptable() {
+        public void onUserInfoCreateError() {
             Logger.getLogger(JMainApplication.class).info("Não foi possível cadastrar usuário");
         }
 
         @Override
-        public void unknow() {
+        public void onUserInfoCreateUnknow() {
             Logger.getLogger(JMainApplication.class).info("Resposta desconhecida");
         }
 
         @Override
-        public void failure(String message) {
+        public void onUserInfoCreateFailure(String message) {
             Logger.getLogger(JMainApplication.class).info("Não foi possível cadastrar usuário: " + message);
         }
     }
@@ -140,7 +140,7 @@ public class JMainApplication implements Runnable {
     private class GetUserInfoListListener implements IUserInfoGetUserListListener {
 
         @Override
-        public void ok(LinkedList<JUserInfoEntity> list) {
+        public void onUserInfoListFound(LinkedList<JUserInfoEntity> list) {
             Logger.getLogger(JMainApplication.class).info("Total de usuários cadastrados: " + list.size());
             if (list.size() > 1) {
                 JUserInfoEntity entity = list.getFirst();
@@ -150,17 +150,17 @@ public class JMainApplication implements Runnable {
         }
 
         @Override
-        public void noContent() {
+        public void onUserInfoListEmpty() {
             Logger.getLogger(JMainApplication.class).info("Não há usuários cadastrados");
         }
 
         @Override
-        public void unknow() {
+        public void onUserInfoListUnknow() {
             Logger.getLogger(JMainApplication.class).info("Resposta desconhecida");
         }
 
         @Override
-        public void failure(String message) {
+        public void onUserInfoListFailure(String message) {
             Logger.getLogger(JMainApplication.class).info("Não foi possível listar usuários: " + message);
         }
     }
@@ -168,24 +168,24 @@ public class JMainApplication implements Runnable {
     private class UpdateUserInfoListener implements IUserInfoUpdateUserListener {
 
         @Override
-        public void ok(JUserInfoEntity entity) {
+        public void onUserInfoUpdatedSucessfully(JUserInfoEntity entity) {
             Logger.getLogger(JMainApplication.class).info("Usuário atualizado: " + entity.toString());
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
             userInfoApiController.getUserList(null, null, getUserInfoListListener);
         }
 
         @Override
-        public void noContent() {
+        public void onUserInfoUpdateError() {
             Logger.getLogger(JMainApplication.class).info("Usuário não encontrado");
         }
 
         @Override
-        public void unknow() {
+        public void onUserInfoUpdateUnknow() {
             Logger.getLogger(JMainApplication.class).info("Resposta desconhecida");
         }
 
         @Override
-        public void failure(String message) {
+        public void onUserInfoUpdateFailure(String message) {
             Logger.getLogger(JMainApplication.class).info("Não foi possível atualizar usuário: " + message);
         }
 
@@ -194,27 +194,27 @@ public class JMainApplication implements Runnable {
     private class DeleteUserInfoListener implements IUserInfoDeleteUserListener {
 
         @Override
-        public void ok(JUserInfoEntity entity) {
+        public void onUserInfoDeletedSucessfully(JUserInfoEntity entity) {
             Logger.getLogger(JMainApplication.class).info("Usuário apagado: " + entity.toString());
         }
 
         @Override
-        public void noContent() {
+        public void onUserInfoDeleteError() {
             Logger.getLogger(JMainApplication.class).info("Usuário não foi apagado.");
         }
 
         @Override
-        public void notFound() {
+        public void onUserInfoNotFound() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
-        public void unknow() {
+        public void onUserInfoDeleteUnknow() {
             Logger.getLogger(JMainApplication.class).info("Usuário não foi encontrado.");
         }
 
         @Override
-        public void failure(String message) {
+        public void onUserInfoDeleteFailure(String message) {
             Logger.getLogger(JMainApplication.class).info("Não foi possível apagar usuário: " + message);
         }
 

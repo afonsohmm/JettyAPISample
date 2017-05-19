@@ -13,16 +13,16 @@ import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
  */
 public interface IUserInfoCreateUserListener {
 
-    public void created(JUserInfoEntity entity);
+    public void onUserInfoCreatedSucessfully(JUserInfoEntity entity);
 
-    public void badRequest();
+    public void onUserInfoEmailNotValid();
 
-    public void conflict();
+    public void onUserInfoEmailInUse();
 
-    public void notAcceptable();
+    public void onUserInfoCreateError();
 
-    public void unknow();
+    public void onUserInfoCreateUnknow();
 
-    public void failure(String message);
+    public void onUserInfoCreateFailure(String message);
 
 }

@@ -13,12 +13,12 @@ import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
  */
 public interface IUserInfoUpdateUserListener {
 
-    public void ok(JUserInfoEntity entity);
+    public void onUserInfoUpdatedSucessfully(JUserInfoEntity entity);
 
-    public void noContent();
+    public void onUserInfoUpdateError();
 
-    public void unknow();
+    public void onUserInfoUpdateUnknow();
 
-    public void failure(String message);
+    public void onUserInfoUpdateFailure(String message);
 
 }
