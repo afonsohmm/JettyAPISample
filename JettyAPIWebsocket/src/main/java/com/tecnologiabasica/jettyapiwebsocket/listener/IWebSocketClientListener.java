@@ -5,6 +5,7 @@
  */
 package com.tecnologiabasica.jettyapiwebsocket.listener;
 
+import com.tecnologiabasica.jettyapiwebsocket.receiver.JWebSocketClientReceiver;
 import org.eclipse.jetty.websocket.api.Session;
 
 /**
@@ -13,11 +14,11 @@ import org.eclipse.jetty.websocket.api.Session;
  */
 public interface IWebSocketClientListener {
 
-    public void onWebSocketConnect(Session session);
+    public void onWebSocketConnect(JWebSocketClientReceiver instance,Session session);
 
-    public void onWebSocketClose(int statusCode, String reason, Session session);
+    public void onWebSocketClose(JWebSocketClientReceiver instance,int statusCode, String reason, Session session);
 
-    public void onWebSocketError(Throwable cause, Session session);
+    public void onWebSocketError(JWebSocketClientReceiver instance,Throwable cause, Session session);
 
-    public void onWebSocketMessageReceive(String message, Session session);
+    public void onWebSocketMessageReceive(JWebSocketClientReceiver instance, String message, Session session);
 }

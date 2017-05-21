@@ -25,6 +25,7 @@ import org.joda.time.DateTime;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateUserListener;
 import com.tecnologiabasica.jettyapiwebsocket.client.JWebSocketClient;
 import com.tecnologiabasica.jettyapiwebsocket.listener.IWebSocketClientListener;
+import com.tecnologiabasica.jettyapiwebsocket.receiver.JWebSocketClientReceiver;
 import org.eclipse.jetty.websocket.api.Session;
 
 /**
@@ -92,7 +93,7 @@ public class JMainApplication implements Runnable {
             entity.setDomainId("domain.com");
             entity.setGroupId("MyGroup");
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-            userInfoApiController.createUser(entity, createUserInfoListener);
+            //userInfoApiController.createUser(entity, createUserInfoListener);
             webSocketClient.sendMessage(entity.toString());
 
         } catch (Exception ex) {
@@ -223,22 +224,22 @@ public class JMainApplication implements Runnable {
     private class WebSocketClientListener implements IWebSocketClientListener {
 
         @Override
-        public void onWebSocketConnect(Session session) {
+        public void onWebSocketConnect(JWebSocketClientReceiver instance, Session session) {
             Logger.getLogger(JMainApplication.class).info("onWebSocketConnect: " + session.getRemoteAddress().getHostName());
         }
 
         @Override
-        public void onWebSocketClose(int statusCode, String reason, Session session) {
+        public void onWebSocketClose(JWebSocketClientReceiver instance, int statusCode, String reason, Session session) {
             Logger.getLogger(JMainApplication.class).info("onWebSocketClose: statusCode: " + statusCode + " - reason: " + reason + " - session: " + session.getRemoteAddress().getHostName());
         }
 
         @Override
-        public void onWebSocketError(Throwable cause, Session session) {
+        public void onWebSocketError(JWebSocketClientReceiver instance, Throwable cause, Session session) {
             Logger.getLogger(JMainApplication.class).info("onWebSocketError: cause: " + cause.getMessage() + " - session: " + session.getRemoteAddress().getHostName());
         }
 
         @Override
-        public void onWebSocketMessageReceive(String message, Session session) {
+        public void onWebSocketMessageReceive(JWebSocketClientReceiver instance, String message, Session session) {
             Logger.getLogger(JMainApplication.class).info("onWebSocketMessageReceive: message: " + message + " - session: " + session.getRemoteAddress().getHostName());
         }
 
