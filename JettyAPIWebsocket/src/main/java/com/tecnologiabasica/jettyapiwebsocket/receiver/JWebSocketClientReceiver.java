@@ -1,14 +1,14 @@
 package com.tecnologiabasica.jettyapiwebsocket.receiver;
 
-import com.tecnologiabasica.jettyapiwebsocket.listener.IWebSocketClientListener;
 import java.util.Objects;
 import java.util.Random;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
+import com.tecnologiabasica.jettyapiwebsocket.listener.IWebSocketListener;
 
 public class JWebSocketClientReceiver implements WebSocketListener {
 
-    private IWebSocketClientListener listener = null;
+    private IWebSocketListener listener = null;
 
     private Session session;
 
@@ -52,7 +52,7 @@ public class JWebSocketClientReceiver implements WebSocketListener {
         return true;
     }
 
-    public JWebSocketClientReceiver(IWebSocketClientListener listener) {
+    public JWebSocketClientReceiver(IWebSocketListener listener) {
         this.listener = listener;
     }
 

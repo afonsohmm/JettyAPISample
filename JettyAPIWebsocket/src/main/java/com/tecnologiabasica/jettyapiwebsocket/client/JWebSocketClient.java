@@ -6,7 +6,6 @@
 package com.tecnologiabasica.jettyapiwebsocket.client;
 
 import com.tecnologiabasica.jettyapicommons.JAppCommons;
-import com.tecnologiabasica.jettyapiwebsocket.listener.IWebSocketClientListener;
 import com.tecnologiabasica.jettyapiwebsocket.receiver.JWebSocketClientReceiver;
 import java.io.IOException;
 import java.net.URI;
@@ -14,6 +13,7 @@ import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
+import com.tecnologiabasica.jettyapiwebsocket.listener.IWebSocketListener;
 
 /**
  *
@@ -42,7 +42,7 @@ public class JWebSocketClient {
         this.endPoint = endPoint;
     }
 
-    public void start(IWebSocketClientListener listener) {
+    public void start(IWebSocketListener listener) {
         try {
             uri = URI.create(JAppCommons.URL_WS + endPoint);
             webSocketClient.start();

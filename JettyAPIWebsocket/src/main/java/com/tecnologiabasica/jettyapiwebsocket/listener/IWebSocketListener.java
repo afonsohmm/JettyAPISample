@@ -12,7 +12,7 @@ import org.eclipse.jetty.websocket.api.Session;
  *
  * @author afonso
  */
-public interface IWebSocketClientListener {
+public interface IWebSocketListener {
 
     public void onWebSocketConnect(JWebSocketClientReceiver instance,Session session);
 

@@ -24,9 +24,9 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateUserListener;
 import com.tecnologiabasica.jettyapiwebsocket.client.JWebSocketClient;
-import com.tecnologiabasica.jettyapiwebsocket.listener.IWebSocketClientListener;
 import com.tecnologiabasica.jettyapiwebsocket.receiver.JWebSocketClientReceiver;
 import org.eclipse.jetty.websocket.api.Session;
+import com.tecnologiabasica.jettyapiwebsocket.listener.IWebSocketListener;
 
 /**
  *
@@ -93,7 +93,7 @@ public class JMainApplication implements Runnable {
             entity.setDomainId("domain.com");
             entity.setGroupId("MyGroup");
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-            //userInfoApiController.createUser(entity, createUserInfoListener);
+            userInfoApiController.createUser(entity, createUserInfoListener);
             webSocketClient.sendMessage(entity.toString());
 
         } catch (Exception ex) {
@@ -221,7 +221,7 @@ public class JMainApplication implements Runnable {
 
     }
 
-    private class WebSocketClientListener implements IWebSocketClientListener {
+    private class WebSocketClientListener implements IWebSocketListener {
 
         @Override
         public void onWebSocketConnect(JWebSocketClientReceiver instance, Session session) {
