@@ -35,7 +35,7 @@ public class JUserInfoSql extends JGenericInfoSql {
             sqlReturn[1] = sql;            
             
             for (int i = 0; i < sqlIndex.length; i++) {
-                sqlReturn[i + 1] = sqlIndex[i];
+                sqlReturn[i + 2] = sqlIndex[i];
             }
         } else {
             sqlReturn = new String[1];
