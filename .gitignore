@@ -9,6 +9,12 @@ target
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# IDE Tools
+/local.properties
+.idea
+.DS_Store
+build
+
 # Package Files #
 *.jar
 *.war
