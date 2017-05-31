@@ -7,7 +7,9 @@ package com.tecnologiabasica.jettyapiclient.api;
 
 import com.tecnologiabasica.jettyapiclient.JApiClientSetup;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
+
 import java.util.LinkedList;
+
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
@@ -18,7 +20,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 /**
- *
  * @author afonso
  */
 public class JUserInfoApiInterface {
@@ -35,17 +36,17 @@ public class JUserInfoApiInterface {
     }
 
     public interface UserInfoApiInterface {
-        @POST("api/userinfo/v1/createUser/")
-        Call<JUserInfoEntity> createUser(@Body JUserInfoEntity entity);
+        @POST("api/v1/userinfo/users/")
+        Call<JUserInfoEntity> create(@Body JUserInfoEntity entity);
 
-        @PUT("api/userinfo/v1/updateUser/")
-        Call<JUserInfoEntity> updateUser(@Body JUserInfoEntity entity);        
+        @PUT("api/v1/userinfo/users/")
+        Call<JUserInfoEntity> update(@Body JUserInfoEntity entity);
 
-        @DELETE("api/userinfo/v1/deleteUser/")
-        Call<JUserInfoEntity> deleteUser(@Query("email") String email);        
-        
-        @GET("api/userinfo/v1/getUserList/")
-        Call<LinkedList<JUserInfoEntity>> getUserList(@Query("domainId") String domainId, @Query("groupId") String groupId);        
+        @DELETE("api/v1/userinfo/users/")
+        Call<JUserInfoEntity> delete(@Query("email") String email);
+
+        @GET("api/v1/userinfo/users/")
+        Call<LinkedList<JUserInfoEntity>> read(@Query("domainId") String domainId, @Query("groupId") String groupId);
     }
 
 }

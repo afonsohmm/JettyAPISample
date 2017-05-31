@@ -16,13 +16,13 @@ import javax.ws.rs.core.Response;
  *
  * @author afonso
  */
-@Path("/applicationinfo")
+@Path("/v1/applicationinfo")
 public class JApplicationInfoResource {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/v1/getServerVersion/")
-    public Response getServerVersion() {
+    @Path("/stringversion/")
+    public Response getStringVersion() {
         Response response = null;
         response = Response.status(Response.Status.OK).entity(JAppCommons.VERSION).build();
         return response;
@@ -30,8 +30,8 @@ public class JApplicationInfoResource {
     
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/v1/getVersionId/")
-    public Response getVersionId() {
+    @Path("/version/")
+    public Response getVersion() {
         Response response = null;
         response = Response.status(Response.Status.OK).entity(String.valueOf(JAppCommons.VERSION_ID)).build();
         return response;

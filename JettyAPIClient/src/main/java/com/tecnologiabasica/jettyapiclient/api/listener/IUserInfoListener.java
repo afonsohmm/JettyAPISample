@@ -6,20 +6,29 @@
 package com.tecnologiabasica.jettyapiclient.api.listener;
 
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
+
 import java.util.LinkedList;
 
 /**
  *
  * @author afonso
  */
-public interface IUserInfoGetUserListListener {
+public interface IUserInfoListener {
 
-    public void onUserInfoListFound(LinkedList<JUserInfoEntity> list);
+    public void onSucess(JUserInfoEntity entity);
 
-    public void onUserInfoListEmpty();
+    public void onSucess(LinkedList<JUserInfoEntity> collection);
 
-    public void onUserInfoListUnknow();
+    public void onNotFound();
 
-    public void onUserInfoListFailure(String message);
+    public void onEmailNotValid();
+
+    public void onEmailInUse();
+
+    public void onError();
+
+    public void onUnknow();
+
+    public void onFailure(String message);
 
 }

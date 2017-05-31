@@ -6,9 +6,7 @@
 package com.tecnologiabasica.jettyapitest;
 
 import com.tecnologiabasica.jettyapiclient.api.controller.JUserInfoApiController;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoCreateUserListener;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoDeleteUserListener;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoGetUserListListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoListener;
 import com.tecnologiabasica.jettyapicommons.JAppCommons;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 import com.tecnologiabasica.jettyapicommons.enums.EDatabaseType;
@@ -22,7 +20,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateUserListener;
 import com.tecnologiabasica.jettyapiwebsocket.client.JWebSocketClient;
 import com.tecnologiabasica.jettyapiwebsocket.receiver.JWebSocketClientReceiver;
 import org.eclipse.jetty.websocket.api.Session;
@@ -39,7 +36,7 @@ public class JMainApplication implements Runnable {
     private ScheduledFuture<?> scheduleHandler = null;
     private String dataBaseName = "databasetest";
 
-    private CreateUserInfoListener createUserInfoListener = new CreateUserInfoListener();
+    private CreateUserInfoInfoListener createUserInfoListener = new CreateUserInfoInfoListener();
     private GetUserInfoListListener getUserInfoListListener = new GetUserInfoListListener();
     private UpdateUserInfoListener updateUserInfoListener = new UpdateUserInfoListener();
     private DeleteUserInfoListener deleteUserInfoListener = new DeleteUserInfoListener();
@@ -93,7 +90,7 @@ public class JMainApplication implements Runnable {
             entity.setDomainId("domain.com");
             entity.setGroupId("MyGroup");
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-            userInfoApiController.createUser(entity, createUserInfoListener);
+            userInfoApiController.create(entity, createUserInfoListener);
             webSocketClient.sendMessage(entity.toString());
 
         } catch (Exception ex) {
@@ -102,120 +99,185 @@ public class JMainApplication implements Runnable {
         scheduleHandler = scheduler.schedule(this, 10, TimeUnit.SECONDS);
     }
 
-    private class CreateUserInfoListener implements IUserInfoCreateUserListener {
+    private class CreateUserInfoInfoListener implements IUserInfoListener {
 
         @Override
-        public void onUserInfoCreatedSucessfully(JUserInfoEntity entity) {
+        public void onSucess(JUserInfoEntity entity) {
             Logger.getLogger(JMainApplication.class).info("Usuário criado: " + entity.toString());
             entity.setUserPassword("123456");
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-            userInfoApiController.updateUser(entity, updateUserInfoListener);
+            userInfoApiController.update(entity, updateUserInfoListener);
         }
 
         @Override
-        public void onUserInfoEmailNotValid() {
+        public void onSucess(LinkedList<JUserInfoEntity> collection) {
+
+        }
+
+        @Override
+        public void onNotFound() {
+
+        }
+
+        @Override
+        public void onEmailNotValid() {
             Logger.getLogger(JMainApplication.class).info("Email informado não é válido");
         }
 
         @Override
-        public void onUserInfoEmailInUse() {
+        public void onEmailInUse() {
             Logger.getLogger(JMainApplication.class).info("Email informado já está em uso");
         }
 
         @Override
-        public void onUserInfoCreateError() {
+        public void onError() {
             Logger.getLogger(JMainApplication.class).info("Não foi possível cadastrar usuário");
         }
 
         @Override
-        public void onUserInfoCreateUnknow() {
+        public void onUnknow() {
             Logger.getLogger(JMainApplication.class).info("Resposta desconhecida");
         }
 
         @Override
-        public void onUserInfoCreateFailure(String message) {
+        public void onFailure(String message) {
             Logger.getLogger(JMainApplication.class).info("Não foi possível cadastrar usuário: " + message);
         }
     }
 
-    private class GetUserInfoListListener implements IUserInfoGetUserListListener {
+    private class GetUserInfoListListener implements IUserInfoListener {
 
         @Override
-        public void onUserInfoListFound(LinkedList<JUserInfoEntity> list) {
-            Logger.getLogger(JMainApplication.class).info("Total de usuários cadastrados: " + list.size());
-            if (list.size() > 1) {
-                JUserInfoEntity entity = list.getFirst();
+        public void onSucess(JUserInfoEntity entity) {
+
+        }
+
+        @Override
+        public void onSucess(LinkedList<JUserInfoEntity> collection) {
+            Logger.getLogger(JMainApplication.class).info("Total de usuários cadastrados: " + collection.size());
+            if (collection.size() > 1) {
+                JUserInfoEntity entity = collection.getFirst();
                 JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-                userInfoApiController.deleteUser(entity.getEmail(), deleteUserInfoListener);
+                userInfoApiController.delete(entity.getEmail(), deleteUserInfoListener);
             }
         }
 
         @Override
-        public void onUserInfoListEmpty() {
+        public void onNotFound() {
             Logger.getLogger(JMainApplication.class).info("Não há usuários cadastrados");
         }
 
         @Override
-        public void onUserInfoListUnknow() {
+        public void onEmailNotValid() {
+
+        }
+
+        @Override
+        public void onEmailInUse() {
+
+        }
+
+        @Override
+        public void onError() {
+
+        }
+
+        @Override
+        public void onUnknow() {
             Logger.getLogger(JMainApplication.class).info("Resposta desconhecida");
         }
 
         @Override
-        public void onUserInfoListFailure(String message) {
+        public void onFailure(String message) {
             Logger.getLogger(JMainApplication.class).info("Não foi possível listar usuários: " + message);
         }
     }
 
-    private class UpdateUserInfoListener implements IUserInfoUpdateUserListener {
+    private class UpdateUserInfoListener implements IUserInfoListener {
 
         @Override
-        public void onUserInfoUpdatedSucessfully(JUserInfoEntity entity) {
+        public void onSucess(JUserInfoEntity entity) {
             Logger.getLogger(JMainApplication.class).info("Usuário atualizado: " + entity.toString());
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-            userInfoApiController.getUserList(null, null, getUserInfoListListener);
+            userInfoApiController.read(null, null, getUserInfoListListener);
         }
 
         @Override
-        public void onUserInfoUpdateError() {
+        public void onSucess(LinkedList<JUserInfoEntity> collection) {
+
+        }
+
+        @Override
+        public void onNotFound() {
+
+        }
+
+        @Override
+        public void onEmailNotValid() {
+
+        }
+
+        @Override
+        public void onEmailInUse() {
+
+        }
+
+        @Override
+        public void onError() {
             Logger.getLogger(JMainApplication.class).info("Usuário não encontrado");
         }
 
         @Override
-        public void onUserInfoUpdateUnknow() {
+        public void onUnknow() {
             Logger.getLogger(JMainApplication.class).info("Resposta desconhecida");
         }
 
         @Override
-        public void onUserInfoUpdateFailure(String message) {
+        public void onFailure(String message) {
             Logger.getLogger(JMainApplication.class).info("Não foi possível atualizar usuário: " + message);
         }
 
     }
 
-    private class DeleteUserInfoListener implements IUserInfoDeleteUserListener {
+    private class DeleteUserInfoListener implements IUserInfoListener {
 
         @Override
-        public void onUserInfoDeletedSucessfully(JUserInfoEntity entity) {
+        public void onSucess(JUserInfoEntity entity) {
             Logger.getLogger(JMainApplication.class).info("Usuário apagado: " + entity.toString());
         }
 
         @Override
-        public void onUserInfoDeleteError() {
-            Logger.getLogger(JMainApplication.class).info("Usuário não foi apagado.");
+        public void onSucess(LinkedList<JUserInfoEntity> collection) {
+
         }
 
         @Override
-        public void onUserInfoNotFound() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        @Override
-        public void onUserInfoDeleteUnknow() {
+        public void onNotFound() {
             Logger.getLogger(JMainApplication.class).info("Usuário não foi encontrado.");
         }
 
         @Override
-        public void onUserInfoDeleteFailure(String message) {
+        public void onEmailNotValid() {
+
+        }
+
+        @Override
+        public void onEmailInUse() {
+
+        }
+
+        @Override
+        public void onError() {
+            Logger.getLogger(JMainApplication.class).info("Usuário não foi apagado.");
+        }
+
+        @Override
+        public void onUnknow() {
+            Logger.getLogger(JMainApplication.class).info("Resposta desconhecida.");
+        }
+
+        @Override
+        public void onFailure(String message) {
             Logger.getLogger(JMainApplication.class).info("Não foi possível apagar usuário: " + message);
         }
 

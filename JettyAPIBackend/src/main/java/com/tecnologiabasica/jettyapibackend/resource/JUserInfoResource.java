@@ -29,13 +29,13 @@ import org.joda.time.DateTime;
  *
  * @author afonso
  */
-@Path("/userinfo")
+@Path("/v1/userinfo")
 public class JUserInfoResource {
 
-    @Path("/v1/createUser/")
+    @Path("/users/")
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public Response createUser(@Context HttpServletRequest request, JUserInfoEntity entity) {
+    public Response create(@Context HttpServletRequest request, JUserInfoEntity entity) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 
@@ -67,10 +67,10 @@ public class JUserInfoResource {
         return response;
     }
 
-    @Path("/v1/updateUser/")
+    @Path("/users/")
     @Consumes(MediaType.APPLICATION_JSON)
     @PUT
-    public Response updateUser(@Context HttpServletRequest request, JUserInfoEntity entity) {
+    public Response update(@Context HttpServletRequest request, JUserInfoEntity entity) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 
@@ -89,10 +89,10 @@ public class JUserInfoResource {
         return response;
     }
 
-    @Path("/v1/deleteUser/")
+    @Path("/users/")
     @Consumes(MediaType.APPLICATION_JSON)
     @DELETE
-    public Response deleteUser(@Context HttpServletRequest request, @QueryParam("email") String email) {
+    public Response delete(@Context HttpServletRequest request, @QueryParam("email") String email) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 
@@ -117,10 +117,10 @@ public class JUserInfoResource {
         return response;
     }
 
-    @Path("/v1/getUserList/")
+    @Path("/users/")
     @Produces(MediaType.APPLICATION_JSON)
     @GET
-    public Response getUserList(@Context HttpServletRequest request, @QueryParam("domainId") String domainId, @QueryParam("groupId") String groupId) {
+    public Response read(@Context HttpServletRequest request, @QueryParam("domainId") String domainId, @QueryParam("groupId") String groupId) {
         String remoteIP = request.getRemoteAddr();
         Response response = null;
 
