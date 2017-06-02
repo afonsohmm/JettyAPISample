@@ -96,7 +96,7 @@ public class JMainApplication implements Runnable {
         } catch (Exception ex) {
             Logger.getLogger(JMainApplication.class).error(ex);
         }
-        scheduleHandler = scheduler.schedule(this, 10, TimeUnit.SECONDS);
+        scheduleHandler = scheduler.schedule(this, 1, TimeUnit.SECONDS);
     }
 
     private class CreateUserInfoInfoListener implements IUserInfoListener {

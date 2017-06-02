@@ -19,6 +19,7 @@ import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
 /**
  *
@@ -39,7 +40,10 @@ public class JLauncher {
         //Configura o arquivo de log que será gerado. Importante que seja feito o mais rápido possível.
         JLoggerUtil.getInstance().start(JAppCommons.getHomeDir(), "JettyAPIBackend");
 
-        Server server = new Server();
+        QueuedThreadPool queuedThreadPool = new QueuedThreadPool(512,50);
+        queuedThreadPool.setName("thread_JLauncher_server");
+
+        Server server = new Server(queuedThreadPool);
 
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(port);
