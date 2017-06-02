@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.tecnologiabasica.jettyapiclient.api.controller;
+package com.tecnologiabasica.jettyapiapi.api.controller;
 
+import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoListener;
 import com.tecnologiabasica.jettyapiclient.api.JUserInfoApiInterface;
 import java.util.LinkedList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoListener;
 
 /**
  *
