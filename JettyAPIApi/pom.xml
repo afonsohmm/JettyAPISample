@@ -6,7 +6,7 @@
         <artifactId>JettyAPISample</artifactId>
         <version>0.0.1</version>
     </parent>
-    <artifactId>JettyAPIClient</artifactId>
+    <artifactId>JettyAPIApi</artifactId>
     <packaging>jar</packaging>
     
     <dependencies>
