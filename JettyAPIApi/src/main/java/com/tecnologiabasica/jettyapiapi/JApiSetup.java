@@ -1,4 +1,4 @@
-package com.tecnologiabasica.jettyapiclient;
+package com.tecnologiabasica.jettyapiapi;
 
 import com.tecnologiabasica.jettyapicommons.JAppCommons;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author afonso
  */
-public class JApiClientSetup {
+public class JApiSetup {
 
     public static Retrofit getApiClient() {
 

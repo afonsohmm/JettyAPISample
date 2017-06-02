@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>JettyAPIClient</artifactId>
+            <artifactId>JettyAPIApi</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

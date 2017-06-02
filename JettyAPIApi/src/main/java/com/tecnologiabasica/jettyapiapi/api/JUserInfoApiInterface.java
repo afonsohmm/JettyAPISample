@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.tecnologiabasica.jettyapiclient.api;
+package com.tecnologiabasica.jettyapiapi.api;
 
-import com.tecnologiabasica.jettyapiclient.JApiClientSetup;
+import com.tecnologiabasica.jettyapiapi.JApiSetup;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 
 import java.util.LinkedList;
@@ -28,7 +28,7 @@ public class JUserInfoApiInterface {
 
     public static UserInfoApiInterface getUserInfoApiClient() {
         if (userInfoApiInterface == null) {
-            Retrofit client = JApiClientSetup.getApiClient();
+            Retrofit client = JApiSetup.getApiClient();
             userInfoApiInterface = client.create(UserInfoApiInterface.class);
         }
         return userInfoApiInterface;

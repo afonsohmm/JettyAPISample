@@ -6,7 +6,7 @@
 package com.tecnologiabasica.jettyapiapi.api.controller;
 
 import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoListener;
-import com.tecnologiabasica.jettyapiclient.api.JUserInfoApiInterface;
+import com.tecnologiabasica.jettyapiapi.api.JUserInfoApiInterface;
 import java.util.LinkedList;
 import retrofit2.Call;
 import retrofit2.Callback;
