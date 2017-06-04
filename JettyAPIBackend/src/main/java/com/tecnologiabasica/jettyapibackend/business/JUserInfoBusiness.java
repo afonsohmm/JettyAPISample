@@ -5,11 +5,7 @@
  */
 package com.tecnologiabasica.jettyapibackend.business;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
-import com.tecnologiabasica.jettyapicommons.json.JsonExcludeStrategy;
-import java.util.LinkedList;
 
 /**
  *
