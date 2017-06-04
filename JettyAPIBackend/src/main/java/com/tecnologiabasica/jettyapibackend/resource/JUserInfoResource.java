@@ -29,7 +29,7 @@ import org.joda.time.DateTime;
  *
  * @author afonso
  */
-@Path("/v1/userinfo")
+@Path("/v1")
 public class JUserInfoResource {
 
     @Path("/users/")

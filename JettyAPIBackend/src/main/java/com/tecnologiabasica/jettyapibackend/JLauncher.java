@@ -40,7 +40,7 @@ public class JLauncher {
         //Configura o arquivo de log que será gerado. Importante que seja feito o mais rápido possível.
         JLoggerUtil.getInstance().start(JAppCommons.getHomeDir(), "JettyAPIBackend");
 
-        QueuedThreadPool queuedThreadPool = new QueuedThreadPool(512,50);
+        QueuedThreadPool queuedThreadPool = new QueuedThreadPool(512,8);
         queuedThreadPool.setName("thread_JLauncher_server");
 
         Server server = new Server(queuedThreadPool);

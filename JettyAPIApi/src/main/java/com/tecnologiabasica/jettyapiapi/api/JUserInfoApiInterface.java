@@ -36,16 +36,16 @@ public class JUserInfoApiInterface {
     }
 
     public interface UserInfoApiInterface {
-        @POST("api/v1/userinfo/users/")
+        @POST("api/v1/users/")
         Call<JUserInfoEntity> create(@Body JUserInfoEntity entity);
 
-        @PUT("api/v1/userinfo/users/")
+        @PUT("api/v1/users/")
         Call<JUserInfoEntity> update(@Body JUserInfoEntity entity);
 
-        @DELETE("api/v1/userinfo/users/")
+        @DELETE("api/v1/users/")
         Call<JUserInfoEntity> delete(@Query("email") String email);
 
-        @GET("api/v1/userinfo/users/")
+        @GET("api/v1/users/")
         Call<LinkedList<JUserInfoEntity>> read(@Query("domainId") String domainId, @Query("groupId") String groupId);
     }
 
