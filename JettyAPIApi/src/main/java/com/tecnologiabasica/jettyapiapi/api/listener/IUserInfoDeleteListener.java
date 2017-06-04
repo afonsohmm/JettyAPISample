@@ -7,23 +7,16 @@ package com.tecnologiabasica.jettyapiapi.api.listener;
 
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 
-import java.util.LinkedList;
 
 /**
  *
  * @author afonso
  */
-public interface IUserInfoListener {
+public interface IUserInfoDeleteListener {
 
     public void onSucess(JUserInfoEntity entity);
 
-    public void onSucess(LinkedList<JUserInfoEntity> collection);
-
     public void onNotFound();
-
-    public void onEmailNotValid();
-
-    public void onEmailInUse();
 
     public void onError();
 

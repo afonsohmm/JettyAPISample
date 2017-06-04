@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.tecnologiabasica.jettyapicommons.util;
+package com.tecnologiabasica.jettyapicommons.json;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;

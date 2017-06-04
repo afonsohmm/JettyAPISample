@@ -8,7 +8,7 @@ package com.tecnologiabasica.jettyapibackend.business;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
-import com.tecnologiabasica.jettyapicommons.util.JsonExcludeStrategy;
+import com.tecnologiabasica.jettyapicommons.json.JsonExcludeStrategy;
 import java.util.LinkedList;
 
 /**
@@ -33,17 +33,4 @@ public class JUserInfoBusiness {
     public void createUser(JUserInfoEntity entity) {
         
     }
-
-    public static String getOutputJSonUserInfoEntity(JUserInfoEntity entity) {
-        Gson gson = new GsonBuilder().setExclusionStrategies(new JsonExcludeStrategy()).create();
-        String output = gson.toJson(entity);
-        return output;
-    }
-
-    public static String getOutputJSonListUserInfo(LinkedList<JUserInfoEntity> list) {
-        Gson gson = new GsonBuilder().setExclusionStrategies(new JsonExcludeStrategy()).create();
-        String output = gson.toJson(list);
-        return output;
-    }
-
 }

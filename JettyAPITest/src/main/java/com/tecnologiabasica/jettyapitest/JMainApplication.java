@@ -6,7 +6,10 @@
 package com.tecnologiabasica.jettyapitest;
 
 import com.tecnologiabasica.jettyapiapi.api.controller.JUserInfoApiController;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoListener;
+import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoCreateListener;
+import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoDeleteListener;
+import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoReadListener;
+import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoUpdateListener;
 import com.tecnologiabasica.jettyapicommons.JAppCommons;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 import com.tecnologiabasica.jettyapicommons.enums.EDatabaseType;
@@ -36,10 +39,10 @@ public class JMainApplication implements Runnable {
     private ScheduledFuture<?> scheduleHandler = null;
     private String dataBaseName = "databasetest";
 
-    private CreateUserInfoInfoListener createUserInfoListener = new CreateUserInfoInfoListener();
-    private GetUserInfoListListener getUserInfoListListener = new GetUserInfoListListener();
-    private UpdateUserInfoListener updateUserInfoListener = new UpdateUserInfoListener();
-    private DeleteUserInfoListener deleteUserInfoListener = new DeleteUserInfoListener();
+    private UserInfoCreateListener userInfoCreateListener = new UserInfoCreateListener();
+    private UserInfoReadListener userInfoReadListener = new UserInfoReadListener();
+    private UserInfoUpdateListener userInfoUpdateListener = new UserInfoUpdateListener();
+    private UserInfoDeleteListener userInfoDeleteListener = new UserInfoDeleteListener();
 
     private JWebSocketClient webSocketClient = null;
     private WebSocketClientListener webSocketClientListener = new WebSocketClientListener();
@@ -90,7 +93,7 @@ public class JMainApplication implements Runnable {
             entity.setDomainId("domain.com");
             entity.setGroupId("MyGroup");
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-            userInfoApiController.create(entity, createUserInfoListener);
+            userInfoApiController.create(entity, userInfoCreateListener);
             webSocketClient.sendMessage(entity.toString());
 
         } catch (Exception ex) {
@@ -99,24 +102,14 @@ public class JMainApplication implements Runnable {
         scheduleHandler = scheduler.schedule(this, 1, TimeUnit.SECONDS);
     }
 
-    private class CreateUserInfoInfoListener implements IUserInfoListener {
+    private class UserInfoCreateListener implements IUserInfoCreateListener {
 
         @Override
         public void onSucess(JUserInfoEntity entity) {
             Logger.getLogger(JMainApplication.class).info("Usuário criado: " + entity.toString());
             entity.setUserPassword("123456");
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-            userInfoApiController.update(entity, updateUserInfoListener);
-        }
-
-        @Override
-        public void onSucess(LinkedList<JUserInfoEntity> collection) {
-
-        }
-
-        @Override
-        public void onNotFound() {
-
+            userInfoApiController.update(entity, userInfoUpdateListener);
         }
 
         @Override
@@ -145,12 +138,7 @@ public class JMainApplication implements Runnable {
         }
     }
 
-    private class GetUserInfoListListener implements IUserInfoListener {
-
-        @Override
-        public void onSucess(JUserInfoEntity entity) {
-
-        }
+    private class UserInfoReadListener implements IUserInfoReadListener {
 
         @Override
         public void onSucess(LinkedList<JUserInfoEntity> collection) {
@@ -158,28 +146,13 @@ public class JMainApplication implements Runnable {
             if (collection.size() > 1) {
                 JUserInfoEntity entity = collection.getFirst();
                 JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-                userInfoApiController.delete(entity.getEmail(), deleteUserInfoListener);
+                userInfoApiController.delete(entity.getEmail(), userInfoDeleteListener);
             }
         }
 
         @Override
         public void onNotFound() {
             Logger.getLogger(JMainApplication.class).info("Não há usuários cadastrados");
-        }
-
-        @Override
-        public void onEmailNotValid() {
-
-        }
-
-        @Override
-        public void onEmailInUse() {
-
-        }
-
-        @Override
-        public void onError() {
-
         }
 
         @Override
@@ -193,33 +166,13 @@ public class JMainApplication implements Runnable {
         }
     }
 
-    private class UpdateUserInfoListener implements IUserInfoListener {
+    private class UserInfoUpdateListener implements IUserInfoUpdateListener {
 
         @Override
         public void onSucess(JUserInfoEntity entity) {
             Logger.getLogger(JMainApplication.class).info("Usuário atualizado: " + entity.toString());
             JUserInfoApiController userInfoApiController = new JUserInfoApiController();
-            userInfoApiController.read(null, null, getUserInfoListListener);
-        }
-
-        @Override
-        public void onSucess(LinkedList<JUserInfoEntity> collection) {
-
-        }
-
-        @Override
-        public void onNotFound() {
-
-        }
-
-        @Override
-        public void onEmailNotValid() {
-
-        }
-
-        @Override
-        public void onEmailInUse() {
-
+            userInfoApiController.read(null, null, userInfoReadListener);
         }
 
         @Override
@@ -239,7 +192,7 @@ public class JMainApplication implements Runnable {
 
     }
 
-    private class DeleteUserInfoListener implements IUserInfoListener {
+    private class UserInfoDeleteListener implements IUserInfoDeleteListener {
 
         @Override
         public void onSucess(JUserInfoEntity entity) {
@@ -247,23 +200,8 @@ public class JMainApplication implements Runnable {
         }
 
         @Override
-        public void onSucess(LinkedList<JUserInfoEntity> collection) {
-
-        }
-
-        @Override
         public void onNotFound() {
             Logger.getLogger(JMainApplication.class).info("Usuário não foi encontrado.");
-        }
-
-        @Override
-        public void onEmailNotValid() {
-
-        }
-
-        @Override
-        public void onEmailInUse() {
-
         }
 
         @Override

@@ -7,6 +7,7 @@ package com.tecnologiabasica.jettyapibackend.resource;
 
 import com.tecnologiabasica.jettyapibackend.business.JUserInfoBusiness;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
+import com.tecnologiabasica.jettyapicommons.json.JUserInfoJson;
 import com.tecnologiabasica.jettyapicommons.util.JUtil;
 import com.tecnologiabasica.jettyapidatabase.dao.JUserInfoDAO;
 import java.util.LinkedList;
@@ -54,10 +55,10 @@ public class JUserInfoResource {
             if (id != -1) {
                 entity.setId(id);
                 entity.setRemoteId(id);
-                response = Response.status(Response.Status.CREATED).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+                response = Response.status(Response.Status.CREATED).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
                 JUserInfoBusiness.getInstance().createUser(entity);
             } else {
-                response = Response.status(Response.Status.NOT_ACCEPTABLE).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+                response = Response.status(Response.Status.NOT_ACCEPTABLE).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
             }
 
         }
@@ -78,9 +79,9 @@ public class JUserInfoResource {
 
         long id = JUserInfoDAO.getInstance().update(entity);
         if (id != -1) {
-            response = Response.status(Response.Status.OK).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();            
+            response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();            
         } else {
-            response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+            response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
         }
 
         if (response != null) {
@@ -102,13 +103,13 @@ public class JUserInfoResource {
 
             long id = JUserInfoDAO.getInstance().delete(entity);
             if (id != -1) {
-                response = Response.status(Response.Status.OK).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();                
+                response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();                
             } else {
-                response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+                response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
             }
         } else {
             entity = new JUserInfoEntity();
-            response = Response.status(Response.Status.NOT_FOUND).entity(JUserInfoBusiness.getOutputJSonUserInfoEntity(entity)).build();
+            response = Response.status(Response.Status.NOT_FOUND).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
         }
 
         if (response != null) {
@@ -127,10 +128,10 @@ public class JUserInfoResource {
         LinkedList<JUserInfoEntity> list = JUserInfoDAO.getInstance().getUserList(domainId, groupId);
 
         if (list != null) {
-            response = Response.status(Response.Status.OK).entity(JUserInfoBusiness.getOutputJSonListUserInfo(list)).build();
+            response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonListUserInfo(list)).build();
         } else {
             list = new LinkedList<>();
-            response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoBusiness.getOutputJSonListUserInfo(list)).build();
+            response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoJson.getOutputJSonListUserInfo(list)).build();
         }
         if (response != null) {
             Logger.getLogger(JUserInfoResource.class).info(request.getPathInfo() + " - remoteIP: " + remoteIP + " - " + response.getStatus());

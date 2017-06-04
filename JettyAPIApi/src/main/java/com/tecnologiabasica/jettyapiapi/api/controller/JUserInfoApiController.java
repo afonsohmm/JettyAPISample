@@ -5,8 +5,11 @@
  */
 package com.tecnologiabasica.jettyapiapi.api.controller;
 
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoListener;
 import com.tecnologiabasica.jettyapiapi.api.JUserInfoApiInterface;
+import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoCreateListener;
+import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoDeleteListener;
+import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoReadListener;
+import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoUpdateListener;
 import java.util.LinkedList;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,12 +22,12 @@ import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
  */
 public class JUserInfoApiController {
 
-    private IUserInfoListener createListener = null;
-    private IUserInfoListener updateListener = null;
-    private IUserInfoListener deleteListener = null;
-    private IUserInfoListener readListener = null;
+    private IUserInfoCreateListener createListener = null;
+    private IUserInfoUpdateListener updateListener = null;
+    private IUserInfoDeleteListener deleteListener = null;
+    private IUserInfoReadListener readListener = null;
 
-    public void create(JUserInfoEntity entity, IUserInfoListener listener) {
+    public void create(JUserInfoEntity entity, IUserInfoCreateListener listener) {
         createListener = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
         Call<JUserInfoEntity> call = serviceApi.create(entity);
@@ -63,7 +66,7 @@ public class JUserInfoApiController {
         });
     }
     
-    public void update(JUserInfoEntity entity, IUserInfoListener listener) {
+    public void update(JUserInfoEntity entity, IUserInfoUpdateListener listener) {
         updateListener = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
         Call<JUserInfoEntity> call = serviceApi.update(entity);
@@ -94,7 +97,7 @@ public class JUserInfoApiController {
         });
     }
 
-    public void delete(String email, IUserInfoListener listener) {
+    public void delete(String email, IUserInfoDeleteListener listener) {
         deleteListener = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
         Call<JUserInfoEntity> call = serviceApi.delete(email);
@@ -129,7 +132,7 @@ public class JUserInfoApiController {
         });
     }
 
-    public void read(String domainId, String groupId, IUserInfoListener listener) {
+    public void read(String domainId, String groupId, IUserInfoReadListener listener) {
         readListener = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
         Call<LinkedList<JUserInfoEntity>> call = serviceApi.read(domainId, groupId);
