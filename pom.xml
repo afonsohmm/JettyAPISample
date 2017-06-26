@@ -55,5 +55,6 @@
         <module>JettyAPIApi</module>
         <module>JettyAPITest</module>
         <module>JettyAPIWebsocket</module>
+        <module>JettyAPIDesktop</module>
     </modules>
 </project>
