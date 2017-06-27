@@ -170,7 +170,8 @@ public class JNewDialog extends javax.swing.JDialog {
         public void onEmailNotValid() {
             tfEmail.setText("");
             tfEmail.requestFocus();
-            lbStatus.setText("Email informado não é válido!");            
+            lbStatus.setText("Email informado não é válido!"); 
+            entity = null;
         }
 
         @Override
@@ -178,21 +179,26 @@ public class JNewDialog extends javax.swing.JDialog {
             tfEmail.setText("");
             tfEmail.requestFocus();
             lbStatus.setText("Email informado já está em uso!");
+            entity = null;
         }
 
         @Override
         public void onError() {
-
+            lbStatus.setText("Erro ao salvar usuário no servidor!");
+            entity = null;
         }
 
         @Override
         public void onUnknow() {
+            lbStatus.setText("Erro desconhecido!");
+            entity = null;
 
         }
 
         @Override
         public void onFailure(String message) {
             lbStatus.setText("Falha ao salvar dados: " + message);
+            entity = null;
         }
     }
     
@@ -205,12 +211,12 @@ public class JNewDialog extends javax.swing.JDialog {
 
         @Override
         public void onError() {
-            
+             lbStatus.setText("Erro ao salvar usuário no servidor!");
         }
 
         @Override
         public void onUnknow() {
-            
+            lbStatus.setText("Erro desconhecido!");
         }
 
         @Override
