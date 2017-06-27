@@ -168,7 +168,15 @@ public class JMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btDeleteActionPerformed
 
     private void btReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btReadActionPerformed
-         refreshTable();
+        //Teste com API sincrona
+        JUserInfoApiController apiController = new JUserInfoApiController();
+        LinkedList<JUserInfoEntity> list = apiController.read(null, null);
+        if(list != null) {
+            for (JUserInfoEntity entity : list) {
+                System.out.println(entity.toString());
+            }
+        }
+        refreshTable();
     }//GEN-LAST:event_btReadActionPerformed
 
 

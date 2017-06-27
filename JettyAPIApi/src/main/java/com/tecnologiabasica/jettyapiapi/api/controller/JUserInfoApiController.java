@@ -15,6 +15,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -51,11 +54,11 @@ public class JUserInfoApiController {
                     //NOT ACCEPTABLE
                     case 406:
                         createListener.onError();
-                        break;                                            
+                        break;
                     default:
                         createListener.onUnknow();
-                        break;                        
-                        
+                        break;
+
                 }
             }
 
@@ -65,7 +68,7 @@ public class JUserInfoApiController {
             }
         });
     }
-    
+
     public void update(JUserInfoEntity entity, IUserInfoUpdateListener listener) {
         updateListener = listener;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
@@ -74,7 +77,7 @@ public class JUserInfoApiController {
             @Override
             public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
                 switch (response.code()) {
-                     //OK
+                    //OK
                     case 200:
                         JUserInfoEntity entity200 = response.body();
                         updateListener.onSucess(entity200);
@@ -85,8 +88,8 @@ public class JUserInfoApiController {
                         break;
                     default:
                         updateListener.onUnknow();
-                        break;                        
-                        
+                        break;
+
                 }
             }
 
@@ -105,7 +108,7 @@ public class JUserInfoApiController {
             @Override
             public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
                 switch (response.code()) {
-                     //OK
+                    //OK
                     case 200:
                         JUserInfoEntity entity200 = response.body();
                         deleteListener.onSucess(entity200);
@@ -117,11 +120,11 @@ public class JUserInfoApiController {
                     //NOT FOUND
                     case 404:
                         deleteListener.onNotFound();
-                        break;                        
+                        break;
                     default:
                         deleteListener.onUnknow();
-                        break;                        
-                        
+                        break;
+
                 }
             }
 
@@ -161,6 +164,22 @@ public class JUserInfoApiController {
                 readListener.onFailure(thrwbl.getMessage());
             }
         });
+    }
+
+    public LinkedList<JUserInfoEntity> read(String domainId, String groupId) {
+        LinkedList<JUserInfoEntity> list = null;
+        Response<LinkedList<JUserInfoEntity>> response = null;
+        JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
+        Call<LinkedList<JUserInfoEntity>> call = serviceApi.read(domainId, groupId);
+        try {
+            response = call.execute();
+            if(response != null && response.code() == 200) {
+                list = response.body();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(JUserInfoApiController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
 }
