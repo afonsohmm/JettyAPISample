@@ -25,10 +25,15 @@ import java.util.logging.Logger;
  */
 public class JUserInfoApiController {
 
+    private String errorMessage = null;
     private IUserInfoCreateListener createListener = null;
     private IUserInfoUpdateListener updateListener = null;
     private IUserInfoDeleteListener deleteListener = null;
     private IUserInfoReadListener readListener = null;
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 
     public void create(JUserInfoEntity entity, IUserInfoCreateListener listener) {
         createListener = listener;
@@ -64,6 +69,7 @@ public class JUserInfoApiController {
 
             @Override
             public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
+                errorMessage = thrwbl.getMessage();
                 createListener.onFailure(thrwbl.getMessage());
             }
         });
@@ -95,6 +101,7 @@ public class JUserInfoApiController {
 
             @Override
             public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
+                errorMessage = thrwbl.getMessage();
                 updateListener.onFailure(thrwbl.getMessage());
             }
         });
@@ -130,6 +137,7 @@ public class JUserInfoApiController {
 
             @Override
             public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
+                errorMessage = thrwbl.getMessage();
                 deleteListener.onFailure(thrwbl.getMessage());
             }
         });
@@ -161,6 +169,7 @@ public class JUserInfoApiController {
 
             @Override
             public void onFailure(Call<LinkedList<JUserInfoEntity>> call, Throwable thrwbl) {
+                errorMessage = thrwbl.getMessage();
                 readListener.onFailure(thrwbl.getMessage());
             }
         });
@@ -173,10 +182,11 @@ public class JUserInfoApiController {
         Call<LinkedList<JUserInfoEntity>> call = serviceApi.read(domainId, groupId);
         try {
             response = call.execute();
-            if(response != null && response.code() == 200) {
+            if (response != null && response.code() == 200) {
                 list = response.body();
             }
         } catch (IOException ex) {
+            errorMessage = ex.getMessage();
             Logger.getLogger(JUserInfoApiController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
