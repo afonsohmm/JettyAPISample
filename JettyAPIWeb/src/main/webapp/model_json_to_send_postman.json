@@ -1,0 +1,8 @@
+{ 
+    "to": "dBTg6yz0eRs:APA91bEKNmL1oVo-c6xEJhVf-gfRQ3pVvIWaDZi7ZmNH71P8dhjVQBXITKrYHqrpR-mfciFXwP0Sz8eP0YllGVQA0Ag5UcSrP9GVy0sd_faQDtLNa_j51bxmi1ZpQSg2bCShmqVKNblU", 
+    "notification": {
+        "body": "Oláaa!",
+        "title": "Uma notificação no wicket!",
+        "icon": "logo.png"
+    }
+}
