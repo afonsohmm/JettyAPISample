@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+    <head>
+        <meta charset="utf-8" />
+        <title>Apache Wicket Quickstart</title>
+        <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
+        <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
+        <link rel="manifest" href="manifest.json"/>
+    </head>
+    <body>
+
+    </body>
+
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyAx7ObYTyyFov4pDB2bewQczHgVoHbpXYM",
+            authDomain: "testandopushnotification-99d66.firebaseapp.com",
+            databaseURL: "https://testandopushnotification-99d66.firebaseio.com",
+            projectId: "testandopushnotification-99d66",
+            storageBucket: "testandopushnotification-99d66.appspot.com",
+            messagingSenderId: "167374573198"
+        };
+        firebase.initializeApp(config);
+
+        // Retrieve Firebase Messaging object.
+        const messaging = firebase.messaging();
+
+        // Requisita permissáo para o app receber notifica;óes
+        messaging.requestPermission()
+                .then(function () {
+                    console.log('Notification permission granted.');
+                    console.log(messaging.getToken());
+                    // TODO(developer): Retrieve an Instance ID token for use with FCM.
+                    // ...
+                    return messaging.getToken();
+                })
+                .then(function (token) {
+                    console.log('TOKEN: ' + token);
+                })
+                .catch(function (err) {
+                    console.log('Unable to get permission to notify.', err);
+                });
+
+
+        // Handle incoming messages. Called when:
+        // - a message is received while the app has focus
+        // - the user clicks on an app notification created by a sevice worker
+        //   `messaging.setBackgroundMessageHandler` handler.
+        messaging.onMessage(function (payload) {
+            console.log("Message received: " , payload);
+        });
+
+
+
+
+
+    </script>
+</html>
