@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.tecnologiabasica.jettyapiapi.api.controller;
+package com.tecnologiabasica.jettyapiclient.api.controller;
 
-import com.tecnologiabasica.jettyapiapi.api.JUserInfoApiInterface;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoCreateListener;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoDeleteListener;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoReadListener;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoUpdateListener;
+import com.tecnologiabasica.jettyapiclient.api.JUserInfoApiInterface;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoCreateListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoDeleteListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoReadListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateListener;
 import java.util.LinkedList;
 import retrofit2.Call;
 import retrofit2.Callback;

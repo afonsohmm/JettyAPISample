@@ -52,7 +52,7 @@
         <module>JettyAPIBackend</module>
         <module>JettyAPICommons</module>
         <module>JettyAPIDatabase</module>
-        <module>JettyAPIApi</module>
+        <module>JettyAPIClient</module>
         <module>JettyAPITest</module>
         <module>JettyAPIWebsocket</module>
         <module>JettyAPIDesktop</module>

@@ -3,21 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.tecnologiabasica.jettyapiapi.api.listener;
+package com.tecnologiabasica.jettyapiclient.api.listener;
 
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 
-import java.util.LinkedList;
 
 /**
  *
  * @author afonso
  */
-public interface IUserInfoReadListener {
+public interface IUserInfoUpdateListener {
 
-    public void onSucess(LinkedList<JUserInfoEntity> collection);
-
-    public void onNotFound();
+    public void onSucess(JUserInfoEntity entity);
+   
+    public void onError();
 
     public void onUnknow();
 

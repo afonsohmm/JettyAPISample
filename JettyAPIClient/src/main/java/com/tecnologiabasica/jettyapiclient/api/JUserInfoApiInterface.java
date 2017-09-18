@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.tecnologiabasica.jettyapiapi.api;
+package com.tecnologiabasica.jettyapiclient.api;
 
-import com.tecnologiabasica.jettyapiapi.JApiSetup;
+import com.tecnologiabasica.jettyapiclient.JApiSetup;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 
 import java.util.LinkedList;

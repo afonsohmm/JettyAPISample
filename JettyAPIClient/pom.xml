@@ -6,7 +6,7 @@
         <artifactId>JettyAPISample</artifactId>
         <version>0.0.1</version>
     </parent>
-    <artifactId>JettyAPIApi</artifactId>
+    <artifactId>JettyAPIClient</artifactId>
     <packaging>jar</packaging>
     
     <dependencies>
@@ -32,4 +32,5 @@
         </dependency>
 
     </dependencies>
+    <name>JettyAPIClient</name>
 </project>

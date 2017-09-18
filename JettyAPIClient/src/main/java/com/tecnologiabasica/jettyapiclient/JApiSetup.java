@@ -1,4 +1,4 @@
-package com.tecnologiabasica.jettyapiapi;
+package com.tecnologiabasica.jettyapiclient;
 
 import com.tecnologiabasica.jettyapicommons.JAppCommons;
 import java.io.IOException;
