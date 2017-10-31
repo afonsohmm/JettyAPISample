@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.tecnologiabasica</groupId>
         <artifactId>JettyAPISample</artifactId>
-        <version>0.0.1</version>
+        <version>0.1.0</version>
     </parent>
     <artifactId>JettyAPIBackend</artifactId>
     <packaging>jar</packaging>
@@ -29,12 +29,12 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>9.4.5.v20170502</version>
+            <version>9.4.6.v20170531</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>9.4.5.v20170502</version>
+            <version>9.4.6.v20170531</version>
         </dependency> 
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
@@ -44,12 +44,12 @@
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-moxy</artifactId>
-            <version>2.25.1</version>
+            <version>2.26</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-multipart</artifactId>
-            <version>1.19.3</version>
+            <version>1.19.4</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>

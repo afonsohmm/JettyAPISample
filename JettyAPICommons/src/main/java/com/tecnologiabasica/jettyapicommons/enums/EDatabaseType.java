@@ -14,7 +14,8 @@ public enum EDatabaseType {
     H2DB(0),
     PostgreSQL(1),
     SQLite(2),
-    Firebird(3);
+    Firebird(3),
+    MariaDB(4);
 
     private int f_value = -1;
 

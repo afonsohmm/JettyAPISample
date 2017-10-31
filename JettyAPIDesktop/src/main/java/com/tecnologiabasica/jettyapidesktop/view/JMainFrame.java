@@ -5,9 +5,9 @@
  */
 package com.tecnologiabasica.jettyapidesktop.view;
 
-import com.tecnologiabasica.jettyapiapi.api.controller.JUserInfoApiController;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoDeleteListener;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoReadListener;
+import com.tecnologiabasica.jettyapiclient.api.controller.JUserInfoApiController;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoDeleteListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoReadListener;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 import java.util.LinkedList;
 

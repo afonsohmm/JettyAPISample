@@ -5,11 +5,11 @@
  */
 package com.tecnologiabasica.jettyapitest;
 
-import com.tecnologiabasica.jettyapiapi.api.controller.JUserInfoApiController;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoCreateListener;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoDeleteListener;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoReadListener;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoUpdateListener;
+import com.tecnologiabasica.jettyapiclient.api.controller.JUserInfoApiController;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoCreateListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoDeleteListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoReadListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateListener;
 import com.tecnologiabasica.jettyapicommons.JAppCommons;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 import com.tecnologiabasica.jettyapicommons.enums.EDatabaseType;
@@ -37,7 +37,7 @@ public class JMainApplication implements Runnable {
     private static JMainApplication instance = null;
     private ScheduledExecutorService scheduler = null;
     private ScheduledFuture<?> scheduleHandler = null;
-    private String dataBaseName = "databasetest";
+    private String dataBaseName = "jettyapitest";
 
     private UserInfoCreateListener userInfoCreateListener = new UserInfoCreateListener();
     private UserInfoReadListener userInfoReadListener = new UserInfoReadListener();

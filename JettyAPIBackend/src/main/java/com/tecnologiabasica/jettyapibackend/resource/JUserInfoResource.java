@@ -23,7 +23,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
 /**
@@ -62,9 +61,7 @@ public class JUserInfoResource {
             }
 
         }
-        if (response != null) {
-            Logger.getLogger(JUserInfoResource.class).info(request.getPathInfo() + " - remoteIP: " + remoteIP + " - " + response.getStatus());
-        }
+        
         return response;
     }
 
@@ -79,14 +76,11 @@ public class JUserInfoResource {
 
         long id = JUserInfoDAO.getInstance().update(entity);
         if (id != -1) {
-            response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();            
+            response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
         } else {
             response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
         }
 
-        if (response != null) {
-            Logger.getLogger(JUserInfoResource.class).info(request.getPathInfo() + " - remoteIP: " + remoteIP + " - " + response.getStatus());
-        }
         return response;
     }
 
@@ -103,7 +97,7 @@ public class JUserInfoResource {
 
             long id = JUserInfoDAO.getInstance().delete(entity);
             if (id != -1) {
-                response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();                
+                response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
             } else {
                 response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
             }
@@ -112,9 +106,6 @@ public class JUserInfoResource {
             response = Response.status(Response.Status.NOT_FOUND).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
         }
 
-        if (response != null) {
-            Logger.getLogger(JUserInfoResource.class).info(request.getPathInfo() + " - remoteIP: " + remoteIP + " - " + response.getStatus());
-        }
         return response;
     }
 
@@ -132,9 +123,6 @@ public class JUserInfoResource {
         } else {
             list = new LinkedList<>();
             response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoJson.getOutputJSonListUserInfo(list)).build();
-        }
-        if (response != null) {
-            Logger.getLogger(JUserInfoResource.class).info(request.getPathInfo() + " - remoteIP: " + remoteIP + " - " + response.getStatus());
         }
         return response;
     }

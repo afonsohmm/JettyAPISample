@@ -29,7 +29,7 @@ public class JMainApplication implements Runnable {
     private static JMainApplication instance = null;
     private ScheduledExecutorService scheduler = null;
     private ScheduledFuture<?> scheduleHandler = null;
-    private String dataBaseName = "databasesample";
+    private String dataBaseName = "jettyapibackend";
     private WebSocketServerListener webSocketListener = null;
 
     public static JMainApplication getInstance() {

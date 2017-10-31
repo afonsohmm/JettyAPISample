@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.tecnologiabasica</groupId>
         <artifactId>JettyAPISample</artifactId>
-        <version>0.0.1</version>
+        <version>0.1.0</version>
     </parent>
     <artifactId>JettyAPITest</artifactId>
     <packaging>jar</packaging>
@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>JettyAPIApi</artifactId>
+            <artifactId>JettyAPIClient</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

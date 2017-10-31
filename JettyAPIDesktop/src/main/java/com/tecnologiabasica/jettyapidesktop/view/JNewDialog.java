@@ -5,9 +5,10 @@
  */
 package com.tecnologiabasica.jettyapidesktop.view;
 
-import com.tecnologiabasica.jettyapiapi.api.controller.JUserInfoApiController;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoCreateListener;
-import com.tecnologiabasica.jettyapiapi.api.listener.IUserInfoUpdateListener;
+
+import com.tecnologiabasica.jettyapiclient.api.controller.JUserInfoApiController;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoCreateListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateListener;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 
 /**

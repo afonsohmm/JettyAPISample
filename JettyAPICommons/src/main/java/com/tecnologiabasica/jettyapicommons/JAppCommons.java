@@ -17,24 +17,26 @@ import org.apache.commons.io.FileUtils;
  */
 public class JAppCommons {
 
-    public static final int VERSION_ID = 1;
-    public static final String VERSION = "0.0.1." + VERSION_ID;
+    public static final int VERSION_ID = 2;
+    public static final String VERSION = "0.1.0." + VERSION_ID;
     public static final int GMT_SERVER = 3;
-    public static final String PRODUCT_NAME = "JettyAPITemplate";
+    public static final String PRODUCT_NAME = "JettyAPISample";
     public static final String COMPANY = "Powered by Tecnologia Básica";
+    public static final String PRODUCT_DIR = ".jettyapisample";
 
     public static String URL_API = "http://localhost:8080/";
     public static String URL_UI = "https://localhost/";
     public static String URL_WS = "ws://localhost:8080/";
 
-    public static final String API_TOKEN = "jetty";
+    public static final String API_TOKEN = "jetty2017";
+    public static final boolean API_DEBUG = true;
 
     private JAppCommons() {
 
     }
 
     public static String getHomeDir() {
-        String homeDir = System.getProperty("user.home") + File.separator + ".jettyapisample";
+        String homeDir = System.getProperty("user.home") + File.separator + PRODUCT_DIR;
         File theDir = new File(homeDir);
 
         if (!theDir.exists()) {
@@ -79,7 +81,7 @@ public class JAppCommons {
         String urlUi = null;
         System.out.println("HOME DIR: " + homeDir);
         try {
-            Properties prop = JFileUtil.getPropertiesFile(homeDir + "/server.properties");
+            Properties prop = JFileUtil.getPropertiesFile(homeDir + File.separator + "server.properties");
             if (prop != null) {
                 urlApi = prop.getProperty("url.api");
                 urlUi = prop.getProperty("url.ui");
@@ -96,7 +98,7 @@ public class JAppCommons {
     public static String getServerProperty(String homeDir, String property) {
         String returnValue = null;
         try {
-            Properties prop = JFileUtil.getPropertiesFile(homeDir + "/server.properties");
+            Properties prop = JFileUtil.getPropertiesFile(homeDir + File.separator + "server.properties");
             if (prop != null) {
                 returnValue = prop.getProperty(property);
             }
