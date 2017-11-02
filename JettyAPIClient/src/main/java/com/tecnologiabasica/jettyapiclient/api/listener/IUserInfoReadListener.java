@@ -19,7 +19,7 @@ public interface IUserInfoReadListener {
 
     public void onNotFound();
 
-    public void onUnknow();
+    public void onUnknow(int statusCode, String message);
 
     public void onFailure(String message);
 

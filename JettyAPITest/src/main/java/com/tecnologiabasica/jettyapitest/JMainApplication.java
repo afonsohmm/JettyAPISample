@@ -156,8 +156,8 @@ public class JMainApplication implements Runnable {
         }
 
         @Override
-        public void onUnknow() {
-            Logger.getLogger(JMainApplication.class).info("Resposta desconhecida");
+        public void onUnknow(int statusCode, String message) {
+            Logger.getLogger(JMainApplication.class).info(message);
         }
 
         @Override

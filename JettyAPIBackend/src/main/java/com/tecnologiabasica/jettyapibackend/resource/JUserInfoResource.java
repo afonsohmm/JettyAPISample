@@ -99,7 +99,7 @@ public class JUserInfoResource {
             if (id != -1) {
                 response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
             } else {
-                response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
+                response = Response.status(Response.Status.BAD_REQUEST).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
             }
         } else {
             entity = new JUserInfoEntity();

@@ -170,10 +170,16 @@ public class JMainFrame extends javax.swing.JFrame {
     private void btReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btReadActionPerformed
         //Teste com API sincrona
         JUserInfoApiController apiController = new JUserInfoApiController();
-        LinkedList<JUserInfoEntity> list = apiController.read(null, null);
+        LinkedList<JUserInfoEntity> list = apiController.read(null, null, null);
         if(list != null) {
             for (JUserInfoEntity entity : list) {
                 System.out.println(entity.toString());
+            }
+        } else {
+            if(apiController.getErrorCode() == -1) {
+                lbStatus.setText("Falha ao comunicar-se com servidor: " + apiController.getErrorMessage());
+            } else {
+                lbStatus.setText(apiController.getErrorMessage());
             }
         }
         refreshTable();
@@ -210,8 +216,9 @@ public class JMainFrame extends javax.swing.JFrame {
         }
 
         @Override
-        public void onUnknow() {
+        public void onUnknow(int statusCode, String message) {
             table.reload(new LinkedList<JUserInfoEntity>());
+            lbStatus.setText(message);
         }
 
         @Override
