@@ -5,11 +5,10 @@
  */
 package com.tecnologiabasica.jettyapidesktop.view;
 
-
 import com.tecnologiabasica.jettyapiclient.api.controller.JUserInfoApiController;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoCreateListener;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoListener;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
+import java.util.LinkedList;
 
 /**
  *
@@ -140,7 +139,7 @@ public class JNewDialog extends javax.swing.JDialog {
             entity.setUserPassword(tfPassword.getText());
             entity.setEmail(tfEmail.getText());
             JUserInfoApiController apiController = new JUserInfoApiController();
-            apiController.update(entity, new UserInfoUpdateListener());            
+            apiController.update(entity, new UserInfoUpdateListener());
         }
     }//GEN-LAST:event_btSaveActionPerformed
 
@@ -160,70 +159,56 @@ public class JNewDialog extends javax.swing.JDialog {
     private javax.swing.JTextField tfPassword;
     // End of variables declaration//GEN-END:variables
 
-    private class UserInfoCreateListener implements IUserInfoCreateListener {
+    private class UserInfoCreateListener implements IUserInfoListener {
 
         @Override
-        public void onSucess(JUserInfoEntity entity) {
+        public void onOk(LinkedList<JUserInfoEntity> collection) {
             dispose();
         }
 
         @Override
-        public void onEmailNotValid() {
-            tfEmail.setText("");
-            tfEmail.requestFocus();
-            lbStatus.setText("Email informado não é válido!"); 
-            entity = null;
+        public void onOk(JUserInfoEntity entity) {
+            dispose();
         }
 
         @Override
-        public void onEmailInUse() {
-            tfEmail.setText("");
-            tfEmail.requestFocus();
-            lbStatus.setText("Email informado já está em uso!");
+        public void onError(int statusCode, String message) {
+            switch (statusCode) {
+                case 406:
+                    tfEmail.setText("");
+                    tfEmail.requestFocus();
+                    lbStatus.setText("Email informado não é válido!");
+                    break;
+                case 409:
+                    tfEmail.setText("");
+                    tfEmail.requestFocus();
+                    lbStatus.setText("Email informado já está em uso!");
+                    break;
+                default:
+                    lbStatus.setText("Falha ao salvar dados: " + message);
+                    break;
+            }
             entity = null;
-        }
 
-        @Override
-        public void onError() {
-            lbStatus.setText("Erro ao salvar usuário no servidor!");
-            entity = null;
-        }
-
-        @Override
-        public void onUnknow() {
-            lbStatus.setText("Erro desconhecido!");
-            entity = null;
-
-        }
-
-        @Override
-        public void onFailure(String message) {
-            lbStatus.setText("Falha ao salvar dados: " + message);
-            entity = null;
         }
     }
-    
-    private class UserInfoUpdateListener implements IUserInfoUpdateListener {
+
+    private class UserInfoUpdateListener implements IUserInfoListener {
 
         @Override
-        public void onSucess(JUserInfoEntity entity) {
+        public void onOk(LinkedList<JUserInfoEntity> collection) {
             dispose();
         }
 
         @Override
-        public void onError() {
-             lbStatus.setText("Erro ao salvar usuário no servidor!");
+        public void onOk(JUserInfoEntity entity) {
+            dispose();
         }
 
         @Override
-        public void onUnknow() {
-            lbStatus.setText("Erro desconhecido!");
-        }
-
-        @Override
-        public void onFailure(String message) {
+        public void onError(int statusCode, String message) {
             lbStatus.setText("Falha ao salvar dados: " + message);
         }
-        
+
     }
 }

@@ -7,21 +7,18 @@ package com.tecnologiabasica.jettyapiclient.api.listener;
 
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 
+import java.util.LinkedList;
 
 /**
  *
  * @author afonso
  */
-public interface IUserInfoDeleteListener {
+public interface IUserInfoListener {
 
-    public void onSucess(JUserInfoEntity entity);
+    public void onOk(LinkedList<JUserInfoEntity> collection);
 
-    public void onNotFound();
+    public void onOk(JUserInfoEntity entity);   
 
-    public void onError();
-
-    public void onUnknow();
-
-    public void onFailure(String message);
+    public void onError(int statusCode, String message);
 
 }

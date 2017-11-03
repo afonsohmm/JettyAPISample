@@ -6,18 +6,13 @@
 package com.tecnologiabasica.jettyapiclient.api.controller;
 
 import com.tecnologiabasica.jettyapiclient.api.JUserInfoApiInterface;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoCreateListener;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoDeleteListener;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoReadListener;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoUpdateListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoListener;
 import java.util.LinkedList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -25,23 +20,21 @@ import java.util.logging.Logger;
  */
 public class JUserInfoApiController {
 
-    private int errorCode = -1;
-    private String errorMessage = null;
-    private IUserInfoCreateListener createListener = null;
-    private IUserInfoUpdateListener updateListener = null;
-    private IUserInfoDeleteListener deleteListener = null;
-    private IUserInfoReadListener readListener = null;
+    private int responseCode = -1;
+    private String responseMessage = null;
+    private IUserInfoListener responseListener = null;
 
-    public int getErrorCode() {
-        return errorCode;
+    public int getResponseCode() {
+        return responseCode;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getResponseMessage() {
+        return responseMessage;
     }
 
-    public void create(JUserInfoEntity entity, IUserInfoCreateListener listener) {
-        createListener = listener;
+    public JUserInfoEntity create(JUserInfoEntity entity, IUserInfoListener listener) {
+        responseListener = listener;
+        JUserInfoEntity syncEntity = null;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
         Call<JUserInfoEntity> call = serviceApi.create(entity);
         //Ao chamar a função passando o listener como null, será uma chamada sincrona.
@@ -50,104 +43,17 @@ public class JUserInfoApiController {
                 @Override
                 public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
                     switch (response.code()) {
-                        //CREATED
-                        case 201:
-                            JUserInfoEntity entity201 = response.body();
-                            createListener.onSucess(entity201);
-                            break;
-                        //BAD REQUEST
-                        case 400:
-                            createListener.onEmailNotValid();
-                            break;
-                        //CONFLICT
-                        case 409:
-                            createListener.onEmailInUse();
-                            break;
-                        //NOT ACCEPTABLE
-                        case 406:
-                            createListener.onError();
-                            break;
-                        default:
-                            createListener.onUnknow();
-                            break;
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
-                    errorMessage = thrwbl.getMessage();
-                    createListener.onFailure(thrwbl.getMessage());
-                }
-            });
-        } else {
-
-        }
-    }
-
-    public void update(JUserInfoEntity entity, IUserInfoUpdateListener listener) {
-        updateListener = listener;
-        JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
-        Call<JUserInfoEntity> call = serviceApi.update(entity);
-        call.enqueue(new Callback<JUserInfoEntity>() {
-            @Override
-            public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
-                switch (response.code()) {
-                    //OK
-                    case 200:
-                        JUserInfoEntity entity200 = response.body();
-                        updateListener.onSucess(entity200);
-                        break;
-                    //NO CONTENT
-                    case 204:
-                        updateListener.onError();
-                        break;
-                    default:
-                        updateListener.onUnknow();
-                        break;
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
-                errorMessage = thrwbl.getMessage();
-                updateListener.onFailure(thrwbl.getMessage());
-            }
-        });
-    }
-
-    public JUserInfoEntity delete(String email, IUserInfoDeleteListener listener) {
-        deleteListener = listener;
-        JUserInfoEntity syncEntity = null;
-        JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
-        Call<JUserInfoEntity> call = serviceApi.delete(email);
-        if (listener != null) {
-            call.enqueue(new Callback<JUserInfoEntity>() {
-                @Override
-                public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
-                    switch (response.code()) {
                         //OK
                         case 200:
-                            JUserInfoEntity entity200 = response.body();
-                            deleteListener.onSucess(entity200);
-                            break;
-                        //BAD REQUEST
-                        case 400:
-                            errorCode = response.code();
-                            errorMessage = "Não foi possível deleter";
-                            deleteListener.onError();
-                            break;
-                        //NOT FOUND
-                        case 404:
-                            errorCode = response.code();
-                            errorMessage = "Informação não foi encontrada no servidor";
-                            deleteListener.onNotFound();
+                            JUserInfoEntity entityResponse = response.body();
+                            responseCode = response.code();
+                            responseMessage = JApiResponseString.getApiRespnse(responseCode);
+                            responseListener.onOk(entityResponse);
                             break;
                         default:
-                            errorCode = response.code();
-                            errorMessage = "Código desconhecido: " + errorCode;
-                            deleteListener.onUnknow();
+                            responseCode = response.code();
+                            responseMessage = JApiResponseString.getApiRespnse(responseCode);
+                            responseListener.onError(responseCode, responseMessage);
                             break;
 
                     }
@@ -155,9 +61,9 @@ public class JUserInfoApiController {
 
                 @Override
                 public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
-                    errorCode = -1;
-                    errorMessage = thrwbl.getMessage();
-                    deleteListener.onFailure(thrwbl.getMessage());
+                    responseCode = -1;
+                    responseMessage = thrwbl.getMessage();
+                    responseListener.onError(responseCode, responseMessage);
                 }
             });
         } else {
@@ -170,38 +76,144 @@ public class JUserInfoApiController {
                         case 200:
                             syncEntity = response.body();
                             break;
-                        //BAD REQUEST
-                        case 400:
-                            syncEntity = null;
-                            errorCode = response.code();
-                            errorMessage = "Não foi possível deleter";
-                            break;
-                        //NOT FOUND
-                        case 404:
-                            syncEntity = null;
-                            errorCode = response.code();
-                            errorMessage = "Informação não foi encontrada no servidor";
-                            break;
                         default:
                             syncEntity = null;
-                            errorCode = response.code();
-                            errorMessage = "Código desconhecido: " + errorCode;
+                            responseCode = response.code();
+                            responseMessage = JApiResponseString.getApiRespnse(responseCode);
                             break;
                     }
 
                 }
             } catch (IOException ex) {
-                errorCode = -1;
-                errorMessage = ex.getMessage();
                 syncEntity = null;
-                Logger.getLogger(JUserInfoApiController.class.getName()).log(Level.SEVERE, null, ex);
+                responseCode = -1;
+                responseMessage = ex.getMessage();
             }
         }
         return syncEntity;
     }
 
-    public LinkedList<JUserInfoEntity> read(String domainId, String groupId, IUserInfoReadListener listener) {
-        readListener = listener;
+    public JUserInfoEntity update(JUserInfoEntity entity, IUserInfoListener listener) {
+        responseListener = listener;
+        JUserInfoEntity syncEntity = null;
+        JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
+        Call<JUserInfoEntity> call = serviceApi.update(entity);
+        if (listener != null) {
+            call.enqueue(new Callback<JUserInfoEntity>() {
+                @Override
+                public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
+                    switch (response.code()) {
+                        //OK
+                        case 200:
+                            JUserInfoEntity entityResponse = response.body();
+                            responseCode = response.code();
+                            responseMessage = JApiResponseString.getApiRespnse(responseCode);
+                            responseListener.onOk(entityResponse);
+                            break;
+                        default:
+                            responseCode = response.code();
+                            responseMessage = JApiResponseString.getApiRespnse(responseCode);
+                            responseListener.onError(responseCode, responseMessage);
+                            break;
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
+                    responseCode = -1;
+                    responseMessage = thrwbl.getMessage();
+                    responseListener.onError(responseCode, responseMessage);
+                }
+            });
+        } else {
+            Response<JUserInfoEntity> response = null;
+            try {
+                response = call.execute();
+                if (response != null && response.code() == 200) {
+                    switch (response.code()) {
+                        //OK
+                        case 200:
+                            syncEntity = response.body();
+                            break;
+                        default:
+                            syncEntity = null;
+                            responseCode = response.code();
+                            responseMessage = JApiResponseString.getApiRespnse(responseCode);
+                            break;
+                    }
+
+                }
+            } catch (IOException ex) {
+                syncEntity = null;
+                responseCode = -1;
+                responseMessage = ex.getMessage();
+            }
+        }
+        return syncEntity;
+    }
+
+    public JUserInfoEntity delete(String email, IUserInfoListener listener) {
+        responseListener = listener;
+        JUserInfoEntity syncEntity = null;
+        JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
+        Call<JUserInfoEntity> call = serviceApi.delete(email);
+        if (listener != null) {
+            call.enqueue(new Callback<JUserInfoEntity>() {
+                @Override
+                public void onResponse(Call<JUserInfoEntity> call, Response<JUserInfoEntity> response) {
+                    switch (response.code()) {
+                        //OK
+                        case 200:
+                            JUserInfoEntity entityResponse = response.body();
+                            responseCode = response.code();
+                            responseMessage = JApiResponseString.getApiRespnse(responseCode);
+                            responseListener.onOk(entityResponse);
+                            break;
+                        default:
+                            responseCode = response.code();
+                            responseMessage = JApiResponseString.getApiRespnse(responseCode);
+                            responseListener.onError(responseCode, responseMessage);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JUserInfoEntity> call, Throwable thrwbl) {
+                    responseCode = -1;
+                    responseMessage = thrwbl.getMessage();
+                    responseListener.onError(responseCode, responseMessage);
+                }
+            });
+        } else {
+            Response<JUserInfoEntity> response = null;
+            try {
+                response = call.execute();
+                if (response != null && response.code() == 200) {
+                    switch (response.code()) {
+                        //OK
+                        case 200:
+                            syncEntity = response.body();
+                            break;
+                        default:
+                            syncEntity = null;
+                            responseCode = response.code();
+                            responseMessage = JApiResponseString.getApiRespnse(responseCode);
+                            break;
+                    }
+
+                }
+            } catch (IOException ex) {
+                syncEntity = null;
+                responseCode = -1;
+                responseMessage = ex.getMessage();
+            }
+        }
+        return syncEntity;
+    }
+
+    public LinkedList<JUserInfoEntity> read(String domainId, String groupId, IUserInfoListener listener) {
+        responseListener = listener;
         LinkedList<JUserInfoEntity> syncList = null;
         JUserInfoApiInterface.UserInfoApiInterface serviceApi = JUserInfoApiInterface.getUserInfoApiClient();
         Call<LinkedList<JUserInfoEntity>> call = serviceApi.read(domainId, groupId);
@@ -213,27 +225,22 @@ public class JUserInfoApiController {
                     switch (response.code()) {
                         //OK
                         case 200:
-                            LinkedList<JUserInfoEntity> list200 = null;
-                            list200 = response.body();
-                            readListener.onSucess(list200);
-                            break;
-                        //NO CONTENT
-                        case 204:
-                            readListener.onNotFound();
+                            LinkedList<JUserInfoEntity> listResponse = response.body();
+                            responseListener.onOk(listResponse);
                             break;
                         default:
-                            errorCode = response.code();
-                            errorMessage = "Código desconhecido: " + errorCode;
-                            readListener.onUnknow(errorCode, errorMessage);
+                            responseCode = response.code();
+                            responseMessage = JApiResponseString.getApiRespnse(responseCode);
+                            responseListener.onError(responseCode, responseMessage);
                             break;
                     }
                 }
 
                 @Override
                 public void onFailure(Call<LinkedList<JUserInfoEntity>> call, Throwable thrwbl) {
-                    errorCode = -1;
-                    errorMessage = thrwbl.getMessage();
-                    readListener.onFailure(thrwbl.getMessage());
+                    responseCode = -1;
+                    responseMessage = thrwbl.getMessage();
+                    responseListener.onError(responseCode, responseMessage);
                 }
             });
         } else {
@@ -246,23 +253,18 @@ public class JUserInfoApiController {
                         case 200:
                             syncList = response.body();
                             break;
-                        //NO CONTENT
-                        case 204:
-                            syncList = new LinkedList<JUserInfoEntity>();
-                            break;
                         default:
-                            errorCode = response.code();
-                            errorMessage = "Código desconhecido: " + errorCode;
+                            responseCode = response.code();
+                            responseMessage = JApiResponseString.getApiRespnse(responseCode);
                             syncList = null;
                             break;
                     }
 
                 }
             } catch (IOException ex) {
-                errorCode = -1;
-                errorMessage = ex.getMessage();
                 syncList = null;
-                Logger.getLogger(JUserInfoApiController.class.getName()).log(Level.SEVERE, null, ex);
+                responseCode = -1;
+                responseMessage = ex.getMessage();
             }
         }
         return syncList;

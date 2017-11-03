@@ -40,7 +40,7 @@ public class JUserInfoResource {
         Response response = null;
 
         if (!JUtil.validateEmail(entity.getEmail())) {
-            response = Response.status(Response.Status.BAD_REQUEST).entity(JUtil.buildJsonOutputMessage("Email inválido.")).build();
+            response = Response.status(Response.Status.NOT_ACCEPTABLE).entity(JUtil.buildJsonOutputMessage("Email inválido.")).build();
         } else {
             JUserInfoEntity userFound = JUserInfoDAO.getInstance().getUser(entity.getEmail());
             if (userFound != null) {
@@ -54,10 +54,10 @@ public class JUserInfoResource {
             if (id != -1) {
                 entity.setId(id);
                 entity.setRemoteId(id);
-                response = Response.status(Response.Status.CREATED).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
+                response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
                 JUserInfoBusiness.getInstance().createUser(entity);
             } else {
-                response = Response.status(Response.Status.NOT_ACCEPTABLE).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
+                response = Response.status(Response.Status.BAD_REQUEST).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
             }
 
         }
@@ -78,7 +78,7 @@ public class JUserInfoResource {
         if (id != -1) {
             response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
         } else {
-            response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
+            response = Response.status(Response.Status.BAD_REQUEST).entity(JUserInfoJson.getOutputJSonUserInfoEntity(entity)).build();
         }
 
         return response;
@@ -122,7 +122,7 @@ public class JUserInfoResource {
             response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonListUserInfo(list)).build();
         } else {
             list = new LinkedList<>();
-            response = Response.status(Response.Status.NO_CONTENT).entity(JUserInfoJson.getOutputJSonListUserInfo(list)).build();
+            response = Response.status(Response.Status.OK).entity(JUserInfoJson.getOutputJSonListUserInfo(list)).build();
         }
         return response;
     }

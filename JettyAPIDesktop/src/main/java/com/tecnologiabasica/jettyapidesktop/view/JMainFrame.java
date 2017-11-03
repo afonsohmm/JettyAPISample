@@ -6,8 +6,7 @@
 package com.tecnologiabasica.jettyapidesktop.view;
 
 import com.tecnologiabasica.jettyapiclient.api.controller.JUserInfoApiController;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoDeleteListener;
-import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoReadListener;
+import com.tecnologiabasica.jettyapiclient.api.listener.IUserInfoListener;
 import com.tecnologiabasica.jettyapicommons.entity.JUserInfoEntity;
 import java.util.LinkedList;
 
@@ -159,11 +158,11 @@ public class JMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btUpdateActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
-         JUserInfoEntity entity = table.getJUserInfoEntitySelected();
+        JUserInfoEntity entity = table.getJUserInfoEntitySelected();
         if (entity != null) {
             lbStatus.setText("");
             JUserInfoApiController apiController = new JUserInfoApiController();
-            apiController.delete(entity.getEmail(), new UserInfoDeleteListener());
+            apiController.delete(entity.getEmail(), new UserInfoListener());
         }
     }//GEN-LAST:event_btDeleteActionPerformed
 
@@ -171,15 +170,15 @@ public class JMainFrame extends javax.swing.JFrame {
         //Teste com API sincrona
         JUserInfoApiController apiController = new JUserInfoApiController();
         LinkedList<JUserInfoEntity> list = apiController.read(null, null, null);
-        if(list != null) {
+        if (list != null) {
             for (JUserInfoEntity entity : list) {
                 System.out.println(entity.toString());
             }
         } else {
-            if(apiController.getErrorCode() == -1) {
-                lbStatus.setText("Falha ao comunicar-se com servidor: " + apiController.getErrorMessage());
+            if (apiController.getResponseCode() == -1) {
+                lbStatus.setText("Falha ao comunicar-se com servidor: " + apiController.getResponseMessage());
             } else {
-                lbStatus.setText(apiController.getErrorMessage());
+                lbStatus.setText(apiController.getResponseMessage());
             }
         }
         refreshTable();
@@ -200,62 +199,31 @@ public class JMainFrame extends javax.swing.JFrame {
     public void refreshTable() {
         lbStatus.setText("");
         JUserInfoApiController apiController = new JUserInfoApiController();
-        apiController.read(null, null, new UserInfoReadListener());
+        apiController.read(null, null, new UserInfoListener());
     }
 
-    private class UserInfoReadListener implements IUserInfoReadListener {
+    private class UserInfoListener implements IUserInfoListener {
 
         @Override
-        public void onSucess(LinkedList<JUserInfoEntity> collection) {
+        public void onOk(LinkedList<JUserInfoEntity> collection) {
             table.reload(collection);
         }
 
         @Override
-        public void onNotFound() {
-            table.reload(new LinkedList<JUserInfoEntity>());
-        }
-
-        @Override
-        public void onUnknow(int statusCode, String message) {
-            table.reload(new LinkedList<JUserInfoEntity>());
-            lbStatus.setText(message);
-        }
-
-        @Override
-        public void onFailure(String message) {
-            table.reload(new LinkedList<JUserInfoEntity>());
-            lbStatus.setText("Falha ao comunicar-se com servidor: " + message);
-        }
-
-    }
-    
-    private class UserInfoDeleteListener implements IUserInfoDeleteListener {
-
-        @Override
-        public void onSucess(JUserInfoEntity entity) {
+        public void onOk(JUserInfoEntity entity) {
             refreshTable();
         }
 
         @Override
-        public void onNotFound() {
-            
+        public void onError(int statusCode, String message) {
+            if (statusCode == -1) {
+                table.reload(new LinkedList<JUserInfoEntity>());
+                lbStatus.setText("Falha ao comunicar-se com servidor: " + message);
+            } else {
+                lbStatus.setText(message);
+            }
         }
 
-        @Override
-        public void onError() {
-            
-        }
-
-        @Override
-        public void onUnknow() {
-            
-        }
-
-        @Override
-        public void onFailure(String message) {
-            lbStatus.setText("Falha ao comunicar-se com servidor: " + message);
-        }
-        
     }
 
 }
