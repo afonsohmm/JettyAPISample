@@ -52,7 +52,6 @@ public class JMainFrame extends javax.swing.JFrame {
         btRead = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnBotton.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -74,9 +73,6 @@ public class JMainFrame extends javax.swing.JFrame {
                 .addComponent(lbStatus)
                 .addContainerGap(15, Short.MAX_VALUE))
         );
-
-        getContentPane().add(pnBotton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 800, 40));
-        getContentPane().add(spContent, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 800, 400));
 
         pnTop.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -135,7 +131,23 @@ public class JMainFrame extends javax.swing.JFrame {
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
-        getContentPane().add(pnTop, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 50));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(spContent, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnBotton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(spContent, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(pnBotton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

@@ -8,7 +8,7 @@
     </parent>
     <artifactId>JettyAPIDesktop</artifactId>
     <packaging>jar</packaging>
-     <dependencies>
+    <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>JettyAPICommons</artifactId>
@@ -18,14 +18,9 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>JettyAPIClient</artifactId>
             <version>${project.version}</version>
-        </dependency>
-          <dependency>
-               <groupId>unknown.binary</groupId>
-               <artifactId>AbsoluteLayout</artifactId>
-               <version>SNAPSHOT</version>
-          </dependency>
-     </dependencies>    
-     <build>
+        </dependency>      
+    </dependencies>    
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
